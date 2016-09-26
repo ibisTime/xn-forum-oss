@@ -74,12 +74,8 @@ function doGetDetailBack(res){
 }
 
 function doPay(payResult){
-	var data = {"withdrawNo":$("#withdrawNo").html(),
-			"payResult":payResult,
-			"refNo":$("#refNo").val(),
-			"payNote":$("#payNote").val(),
-			"fee": 0};
-	var url = $("#basePath").val()+"/account/duixian/pay";
+	var data = {"withdrawNo":$("#withdrawNo").html(),"payResult":payResult,"refNo":$("#refNo").val(),"payNote":$("#payNote").val()};
+	var url = $("#basePath").val()+"/account/payWithdrawOrder";
 	doPostAjax(url, data, doSuccessBack);
 }
 	

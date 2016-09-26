@@ -15,8 +15,6 @@ public class XN802200Req {
 
     // 取现订单号
     private String code;
-    
-    private String mobile;
 
     // 去方类型
     private String toType;
@@ -50,8 +48,6 @@ public class XN802200Req {
 
     // 页面个数
     private String limit;
-    
-    private String currency;
 
     public String getAccountNumber() {
         return accountNumber;
@@ -163,22 +159,6 @@ public class XN802200Req {
 
 	public void setFromAccountNumber(String fromAccountNumber) {
 		this.fromAccountNumber = fromAccountNumber;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
 	}
 
 }

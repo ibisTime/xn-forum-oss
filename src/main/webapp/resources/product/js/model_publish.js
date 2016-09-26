@@ -53,14 +53,8 @@ $(function() {
 		formatter: Dict.getNameForList('score_updown')
 	}, {
 		field : 'discountPrice',
-		title : '售价（积分+人民币）',
-		formatter: function(v, r) {
-			if (r.cnyPrice) {
-				return moneyFormat(v) + ' + ' + moneyFormat(r.cnyPrice);
-			} else {
-				return moneyFormat(v);
-			}
-		}
+		title : '售价（积分）',
+		formatter: moneyFormat
 	}, {
 		field : 'toSite',
 		title : '位置',

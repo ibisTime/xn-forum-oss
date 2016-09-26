@@ -24,7 +24,6 @@ import com.xnjr.app.account.req.XN802011Req;
 import com.xnjr.app.account.req.XN802020Req;
 import com.xnjr.app.account.req.XN802030Req;
 import com.xnjr.app.account.req.XN802100Req;
-import com.xnjr.app.account.req.XN802110Req;
 import com.xnjr.app.account.req.XN802120Req;
 import com.xnjr.app.account.req.XN802121Req;
 import com.xnjr.app.account.req.XN802200Req;
@@ -70,15 +69,13 @@ public class AccountAOImpl implements IAccountAO {
     }
 
     @Override
-    public Object queryAJourPage(String mobile, String accountNumber, String ajNo, String currency,
+    public Object queryAJourPage(String accountNumber, String ajNo,
             String status, String bizType, String refNo, String workDate,
             String checkUser, String dateStart, String dateEnd, String start,
             String limit) {
         XN802020Req req = new XN802020Req();
-        req.setMobile(mobile);
         req.setAccountNumber(accountNumber);
         req.setAjNo(ajNo);
-        req.setCurrency(currency);
         req.setStatus(status);
         req.setBizType(bizType);
         req.setRefNo(refNo);
@@ -111,13 +108,11 @@ public class AccountAOImpl implements IAccountAO {
     }
 
     @Override
-    public Object queryRechargeOrderPage(String mobile, String currency, String fromAccountNumber,
+    public Object queryRechargeOrderPage(String fromAccountNumber,
             String accountNumber, String code, String fromType, String fromCode,
             String channel, String refNo, String status, String approveUser,
             String dateStart, String dateEnd, String start, String limit) {
         XN802100Req req = new XN802100Req();
-        req.setMobile(mobile);
-        req.setCurrency(currency);
         req.setFromAccountNumber(fromAccountNumber);
         req.setAccountNumber(accountNumber);
         req.setCode(code);
@@ -164,13 +159,11 @@ public class AccountAOImpl implements IAccountAO {
     }
 
     @Override
-    public Object queryWithdrawOrderPage(String mobile, String currency, String fromAccountNumber, String accountNumber, String code,
+    public Object queryWithdrawOrderPage(String fromAccountNumber, String accountNumber, String code,
             String toType, String toCode, String channel, String refNo,
             String status, String approveUser, String payUser, String dateStart,
             String dateEnd, String start, String limit) {
         XN802200Req req = new XN802200Req();
-        req.setMobile(mobile);
-        req.setCurrency(currency);
         req.setFromAccountNumber(fromAccountNumber);
         req.setAccountNumber(accountNumber);
         req.setCode(code);
@@ -258,13 +251,12 @@ public class AccountAOImpl implements IAccountAO {
     }
 
     @Override
-    public Object queryRedBlueOrderPage(String code, String mobile, String direction,
+    public Object queryRedBlueOrderPage(String code, String direction,
             String status, String applyUser, String approveUser,
             String accountNumber, String dateStart, String dateEnd,
             String start, String limit) {
         XN802700Req req = new XN802700Req();
         req.setCode(code);
-        req.setMobile(mobile);
         req.setDirection(direction);
         req.setStatus(status);
         req.setApplyUser(applyUser);
@@ -567,16 +559,4 @@ public class AccountAOImpl implements IAccountAO {
         return BizConnecter.getBizData("602600", JsonUtils.object2Json(req),
             Object.class);
     }
-
-	@Override
-	public Object RMBRecharge(String accountNumber, String amount,
-			String fromType, String fromCode) {
-		XN802110Req req = new XN802110Req();
-		req.setAccountNumber(accountNumber);
-		req.setAmount(amount);
-		req.setFromCode(fromCode);
-		req.setFromType(fromType);
-		return BizConnecter.getBizData("802110", JsonUtils.object2Json(req),
-	            Object.class);
-	}
 }

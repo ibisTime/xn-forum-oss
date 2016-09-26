@@ -37,12 +37,13 @@ $(function() {
 		rules: {
 			price: {
 				required: true,
-				amount: true
+				number: true,
+				maxlength: 13
 			},
 			quantity: {
 				required: true,
 				number: true,
-				maxlength: 10
+				maxlength: 13
 			},
 			remark: {
 				maxlength: 255
@@ -52,7 +53,7 @@ $(function() {
 	
 	//返回
 	$('#backBtn').click(function() {
-		goBack();
+		window.history.back();
 	});
 });
 
@@ -60,7 +61,7 @@ $(function() {
 function doSucBackSave(res) {
 	if (res.success == true) {
 		alert("操作成功");
-		goBack();
+		window.history.back();
 	}else{
 		alert(res.msg);
 	}

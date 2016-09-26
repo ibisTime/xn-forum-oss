@@ -331,13 +331,13 @@ function doGetMenuCode(res){
 
 //控制按钮呈现方式回执方法
 function doSuccessBackPermission(res){
-	var data = res.data || [];
-	$('.tools .toolbar').empty();
-	for(var i = 0;i < data.length;i++){
-		var menuUrl = data[i].url;
-		menuUrl = menuUrl.substr(menuUrl.lastIndexOf("/")+1);
-		//$("#"+menuUrl+"Btn").show();
-		$('.tools .toolbar').append('<li style="display:block;" id="'+menuUrl+'Btn"><span><img src="'+$('#resourceUrl').val()+'/resources/common/images/t01.png"/></span>'+data[i].name+'</li>');
+	var data = res.data;
+	if(typeof(data) != "undefined"){//判断undifined
+		for(var i = 0;i < data.length;i++){
+			var menuUrl = data[i].url;
+			menuUrl = menuUrl.substr(menuUrl.lastIndexOf("/")+1)
+			$("#"+menuUrl+"Btn").show();
+		}
 	}
 }
 function myShowModalDialog(url, width, height, fn) {
@@ -392,20 +392,7 @@ $.fn.serializeObject = function() {
 };
 
 $.fn.renderDropdown = function(data, keyName, valueName, defaultOption) {
-	var value, url;
-	if ($.isPlainObject(data)) {
-		value = data.value;
-		url = data.url;
-		param = data.param || {};
-		keyName = data.keyName;
-		valueName = data.valueName;
-	}
-	if(url) {
-		ajaxGet(url, param, false, true).then(function(res) {
-			data.data = res.data;
-		});
-	}
-	data = data.data || data || [];
+	data = data || [];
 	keyName = keyName || 'dkey';
 	valueName = valueName || 'dvalue';
 	var html = "<option value=''>请选择</option>" + (defaultOption || '');
@@ -413,22 +400,10 @@ $.fn.renderDropdown = function(data, keyName, valueName, defaultOption) {
 		html += "<option value='"+data[i][keyName]+"'>"+data[i][valueName]+"</option>";
 	}
 	this.html(html);
-	if (value) {
-		this.val(value);
-	}
 };
 
 function renderLink(link, name) {
 	return '<a href="'+link+'" target="_blank">'+name+'</a>';
-}
-
-function renderA(el, link) {
-	if (!link) {
-		return;
-	}
-	var values = link.split('/');
-	el.attr('href', link);
-	el.html(values[values.length - 1]);
 }
 
 // array
@@ -506,87 +481,9 @@ function linkSrc(value) {
 		return '-';
 	}
 	var values = value.split('/');
-	return '<a target="_blank" href="'+value+'">'+values[values.length - 1]+'</a>';
+	return '<a target="_blank" href="'+value+'">'+values[values.length - 1]+'</a>'
 }
 
 function getUserId() {
 	return $('#topUserId', window.parent.frames[0].document).val();
-}
-
-//下拉框
-setTimeout(function() {
-	$('select').chosen && $('select').not('.norender').chosen({search_contains: true});
-}, 100);
-var oriVal = $.fn.val;
-$.fn.val = function(value) {
-	var res = oriVal.apply($(this), arguments);
-	if ($(this).is('select')) {
-		$(this).trigger('chosen:updated');
-	}
-	return res;
-}
-
-$(document).on('click', 'input[type=reset]', function() {
-	var me = this;
-	setTimeout(function() {
-		$(me).closest('.search-form').find('select').trigger('chosen:updated');
-	}, 100);
-});
-
-var oriHtml = $.fn.html;
-$.fn.html = function(value) {
-	var res = oriHtml.apply($(this), arguments);
-	if ($(this).is('select')) {
-		$(this).trigger('chosen:updated');
-	}
-	return res;
-}
-
-// 压缩图片
-function zipImg(file, pos) {
-	if (file.type == 'image/gif') {
-		var reader = new FileReader();
-		reader.onload = function(evt){
-			var image = evt.target.result;
-			$(pos).attr("src",image);
-		}
-		reader.readAsDataURL(file);
-	} else {
-		var mpImg = new MegaPixImage(file);
-		mpImg.render(pos, {quality: 0.5});
-	}
-}
-
-
-//后退
-function goBack() {
- if ('referrer' in document) {
-     window.location = document.referrer;
-     /* OR */
-     //location.replace(document.referrer);
- } else {
-     window.history.back();
- }
-}
-
-function getAccountId(userId, currency) {
-	var res1;
-	ajaxGet($('#basePath').val() + '/account/id', {
-		userId: userId,
-		currency: currency,
-	}, false, true).then(function(res) {
-		res1 = res.data.accountNumber
-	});
-	return res1;
-}
-
-function objectArrayFilter(arr, keys) {
-	keys = keys.split(',');
-	var newArr = [];
-	arr.forEach(function(item) {
-		if (keys.indexOf(item.dkey) > -1) {
-			newArr.push(item);
-		}
-	});
-	return newArr;
 }

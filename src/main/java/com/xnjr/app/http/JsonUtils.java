@@ -1,7 +1,5 @@
 package com.xnjr.app.http;
 
-import java.util.Map;
-
 import com.google.gson.Gson;
 
 public class JsonUtils {
@@ -28,18 +26,6 @@ public class JsonUtils {
     public static String object2Json(Object bean) {
         Gson gson = new Gson();
         return gson.toJson(bean);
-    }
-    
-    /**
-     * 将Map转化为Json
-     * 
-     * @param map
-     * @return String
-     */
-    public static <T> String mapToJson(Map<String, T> map) {
-     Gson gson = new Gson();
-     String jsonStr = gson.toJson(map);
-     return jsonStr;
     }
 
 }

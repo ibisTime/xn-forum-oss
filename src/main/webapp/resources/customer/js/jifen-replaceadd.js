@@ -7,6 +7,10 @@ $(function() {
 	    if(!$("#jsForm").valid()){
 			return false;
 		}
+	    if(isBlank($("#url1").attr("href"))){
+			alert("请上传附件");
+			return;
+		}
 		var data = {};
 		var t = $('form').serializeArray();
 		$.each(t, function() {

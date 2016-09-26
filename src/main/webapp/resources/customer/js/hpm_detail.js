@@ -6,7 +6,7 @@ $(function() {
 		doGetAjax(url, data, doSucBackGetDetail);
 	//返回
 	$('#backBtn').click(function() {
-		goBack();
+		location.href = $("#basePath").val()+"/customer/score2.htm";
 	});
 });
 

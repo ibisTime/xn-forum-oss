@@ -30,7 +30,7 @@ $(function (){
 	
 	//返回
 	$("#backBtn").click(function(){
-		goBack();
+		window.history.back();
 	});
 	
 	
@@ -72,7 +72,7 @@ $(function (){
 function doSuccessBack(res) {
 	if (res.success == true) {
 		alert("操作成功");
-		goBack();
+		window.history.back();
 	}else{
 		alert(res.msg);
 	}

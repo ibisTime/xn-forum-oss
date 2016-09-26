@@ -18,7 +18,6 @@ function doSuccessData(res){
 		$("#idNo").html(result.idNo||'-');
 		$("#remark").html(result.remark||'-');
 		$("#realName").html(result.realName||'-');
-		$("#pdf").html(linkSrc(result.pdf));
 		$("#idKind").html(Dict.getName('id_kind', result.idKind||'-'));
 	}else{
 		alert(res.msg);

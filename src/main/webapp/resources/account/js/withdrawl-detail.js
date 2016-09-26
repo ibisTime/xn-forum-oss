@@ -37,8 +37,9 @@ $(function (){
 			},
 			amount:{
 				required: true,
-				amount:true,
-				isPositive: true
+				number:true,
+				isPositive: true,
+				maxlength: 13
 			}
 		},
 		messages:{

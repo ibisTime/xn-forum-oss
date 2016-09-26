@@ -65,27 +65,17 @@ $(function() {
 			title: '数量'
 		}, {
 			field: 'costPrice',
-			title: '成本价（积分）',
+			title: '成本价',
 			formatter: moneyFormatter
 		}, {
 			field: 'salePrice',
-			title: '零售价（积分+人民币）',
-			formatter: function(v, r) {
-				if (r.saleCnyPrice) {
-					return moneyFormat(r.salePrice) + ' + ' + moneyFormat(r.saleCnyPrice);
-				} else {
-					return moneyFormat(r.salePrice);
-				}
-			}
+			title: '零售价',
+			formatter: moneyFormatter
 		}, {
 			field: '',
-			title: '利润（积分+人民币）',
+			title: '利润',
 			formatter: function(v, r) {
-				if (r.saleCnyPrice) {
-					return moneyFormat(r.salePrice - (r.costPrice || 0)) + ' + ' + moneyFormat(r.saleCnyPrice);
-				} else {
-					return moneyFormat(r.salePrice - (r.costPrice  || 0));
-				}
+				return moneyFormat(r.salePrice - r.costPrice);
 			}
 		}]
 	});

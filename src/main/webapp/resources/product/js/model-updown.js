@@ -24,13 +24,12 @@ $(function() {
 	$("#jsForm").validate({
 		rules: {
 			originalPrice:  {
-				amount: true
+				number: true,
+				maxlength: 13
 			},
 			discountPrice:  {
-				amount: true
-			},
-			cnyPrice: {
-				amount: true
+				number: true,
+				maxlength: 13
 			},
 			toSite: {
 			},
@@ -43,7 +42,6 @@ $(function() {
 		if (!isUp) {
 			$('#originalPrice').rules('add', {required: true});
 			$('#discountPrice').rules('add', {required: true});
-			$('#cnyPrice').rules('add', {required: true});
 			$('#toSite').rules('add', {required: true});
 		} else {
 			$('#remark').rules('add', {required: true});
@@ -58,7 +56,6 @@ $(function() {
 		});
 		data['originalPrice']= moneyParse(data['originalPrice']);
 		data['discountPrice']= moneyParse(data['discountPrice']);
-		data['cnyPrice']= moneyParse(data['cnyPrice']);
 		data['isUp'] = isUp;
 		data['modelCode'] = modelCode;
 		var url = $("#basePath").val()+"/model/updown";
@@ -96,7 +93,6 @@ $(function() {
 			$("#tableList").bootstrapTable("load", res.data.modelSpecsList);
 			$('#originalPrice').val(moneyFormat(res.data.originalPrice));
 			$('#discountPrice').val(moneyFormat(res.data.discountPrice));
-			$('#cnyPrice').val(moneyFormat(res.data.cnyPrice));
 			$('#toSite').val(res.data.toSite || '');
 			$('#remark').val(res.data.remark || '');
 			modelCode = data.model.code;
