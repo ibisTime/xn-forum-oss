@@ -13,7 +13,15 @@ $(function() {
 		doGetAjax(url, data, doSucBackGetDetail);
 	}
 	
-
+	$('#printBtn').click(function() {
+		$('.place').hide();
+		$('#printBtn').hide();
+		$('#backBtn').hide();
+		print();
+		$('.place').show();
+		$('#printBtn').show();
+		$('#backBtn').show();
+	});
 	
 	//返回
 	$('#backBtn').click(function() {
@@ -44,13 +52,15 @@ $(function() {
 			$("#code").html(res.data.code);
 			$("#applyDatetime").html(dateFormatter(res.data.applyDatetime));
 			$("#applyNote").html(res.data.applyNote || '无');
-			$("#loginName").html(res.data.mobile);
+			$("#loginName").html(res.data.applyUser);
 			$('#type').html(Dict.getName('invoice_type', res.data.type));
 			$("#approveDatetime").html(res.data.approveDatetime);
 			$("#receiptTitle").html(res.data.receiptTitle|| '-');
 			$("#receiptType").html(Dict.getName('receipt_type',res.data.receiptType||'无'));
 			$("#status").html(Dict.getName('order_status',res.data.status));
 			$("#totalAmount").html(moneyFormatter(res.data.totalAmount));
+			$("#payCnyAmount").html(moneyFormatter(res.data.payCnyAmount));
+			$("#totalCnyAmount").html(moneyFormatter(res.data.totalCnyAmount));
 			$("#payAmount").html(moneyFormatter(res.data.payAmount));
 			$("#mobile").html(res.data.address?res.data.address.mobile:'-');
 			$("#name").html(res.data.address?res.data.address.addressee:'-');
@@ -71,31 +81,40 @@ function initBusinessTable(){
 		singleSelect : true,
 		clickToSelect : true,
 		columns : [{
-					field : 'productName',
-					title : '产品',
-					align : 'left',
-					valign : 'middle',
-					sortable : false,
-				},{
-					field : 'modelName',
-					title : '型号',
-					align : 'left',
-					valign : 'middle',
-					sortable : false,
-				},{
-					field : 'quantity',
-					title : '产品数量',
-					align : 'left',
-					valign : 'middle',
-					sortable : false
-				},{
-					field : 'salePrice',
-					title : '单价',
-					align : 'left',
-					valign : 'middle',
-					formatter:moneyFormatter,
-					sortable : false
-				}]
+			field : 'modelName',
+			title : '货品名称'
+		},
+		{
+			field : 'productName',
+			title : '品类'
+		}, {
+			field: 'quantity',
+			title: '数量'
+		}, {
+			field: 'costPrice',
+			title: '成本价（积分）',
+			formatter: moneyFormatter
+		}, {
+			field: 'salePrice',
+			title: '零售价（积分+人民币）',
+			formatter: function(v, r) {
+				if (r.saleCnyPrice) {
+					return moneyFormat(r.salePrice) + ' + ' + moneyFormat(r.saleCnyPrice);
+				} else {
+					return moneyFormat(r.salePrice);
+				}
+			}
+		}, {
+			field: '',
+			title: '利润（积分+人民币）',
+			formatter: function(v, r) {
+				if (r.saleCnyPrice) {
+					return moneyFormat(r.salePrice - (r.costPrice || 0)) + ' + ' + moneyFormat(r.saleCnyPrice);
+				} else {
+					return moneyFormat(r.salePrice - (r.costPrice  || 0));
+				}
+			}
+		}]
 	});
 }
 //格式化时间

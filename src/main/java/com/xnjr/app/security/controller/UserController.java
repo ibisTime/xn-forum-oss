@@ -1,13 +1,18 @@
 package com.xnjr.app.security.controller;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonObject;
 import com.xnjr.app.controller.BaseController;
 import com.xnjr.app.enums.EUserKind;
 import com.xnjr.app.exception.BizException;
@@ -47,6 +52,17 @@ public class UserController extends BaseController {
             .setUserDetail(new SessionUser(res.getUserId(), loginName));
         return true;
     }
+    
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Object doLogin(@RequestBody Map map) {
+//        // 校验用户名密码
+//        XN805043Res res = userAO.login((String)map.get("loginName"), (String)map.get("loginPwd"));
+//        // 创建session
+//        sessionProvider
+//            .setUserDetail(new SessionUser(res.getUserId(), (String)map.get("loginName")));
+//        return true;
+//    }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
@@ -193,6 +209,19 @@ public class UserController extends BaseController {
             level, userReferee, mobile, idKind, idNo, realName, roleCode,
             status, updater, start, limit);
     }
+    
+    // 查询终端用户
+    @RequestMapping(value = "/terminal/page", method = RequestMethod.GET)
+    @ResponseBody
+    public Object queryTerminalUserPage(
+            @RequestParam(value = "userReferee", required = false) String userReferee,
+            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam("start") String start,
+            @RequestParam("limit") String limit,
+            @RequestParam(value = "orderColumn", required = false) String orderColumn,
+            @RequestParam(value = "orderDir", required = false) String orderDir) {
+        return userAO.queryTerminalUserPage(userReferee, mobile, start, limit);
+    }
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     @ResponseBody
@@ -214,5 +243,23 @@ public class UserController extends BaseController {
             @RequestParam(value = "tradePwd") String tradePwd) {
         return userAO.editMobile(this.getSessionUser().getUserId(), newMobile,
             smsCaptcha, tradePwd);
+    }
+    
+    // 找回密码
+    @RequestMapping(value = "/pwd/find", method = RequestMethod.POST)
+    @ResponseBody
+    public Object findPwd(
+            @RequestParam(value = "loginName") String loginName,
+            @RequestParam(value = "smsCaptcha") String smsCaptcha,
+            @RequestParam(value = "newLoginPwd") String newLoginPwd) {
+        return userAO.findPwd(loginName, smsCaptcha, newLoginPwd);
+    }
+    
+    // 找回密码发短信
+    @RequestMapping(value = "/pwd/find/sms", method = RequestMethod.POST)
+    @ResponseBody
+    public Object findPwdSMS(
+            @RequestParam(value = "loginName") String loginName) {
+        return userAO.findPwdSMS(loginName);
     }
 }

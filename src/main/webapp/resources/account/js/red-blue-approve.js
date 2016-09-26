@@ -15,7 +15,7 @@ $(function() {
 	
 	//返回
 	$('#backBtn').click(function() {
-		location.href = $("#basePath").val()+"/account/red_blue.htm";
+		goBack();
 	});
 	
 	//入参合法性校验
@@ -25,18 +25,12 @@ $(function() {
 				required: true,
 				maxlength: 64
 			}
-		},
-		messages: {
-			remark: {
-				required: "请输入备注",
-				maxlength: jQuery.format("备注不能大于{0}个字符")
-			}
 		}
 	});
 });
 
 function doGetDetailBack(res){
-	if (res.success == true) {
+	if (res.success) {
 		if(res.data.list.length > 0){
 			var result = res.data.list[0];
 			$("#code").html(result.code);
@@ -49,8 +43,6 @@ function doGetDetailBack(res){
 			$("#applyNote").html(result.applyNote);
 			$("#applyDatetime").html(dateFormat(result.applyDatetime));
 			$("#remark").val(result.remark);
-		}else{
-			alert("根据订单编号获取详情为空");
 		}
 	}else{
 		alert(res.msg);
@@ -71,7 +63,7 @@ function doApprove(approveResult){
 function doSuccessBack(res) {
 	if (res.success == true) {
 		alert("操作成功");
-		window.location.href = $("#basePath").val()+"/account/red_blue.htm";
+		goBack();
 	}else{
 		alert(res.msg);
 	}
