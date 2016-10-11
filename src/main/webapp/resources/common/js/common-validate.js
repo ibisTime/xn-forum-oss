@@ -181,11 +181,18 @@ $('form').validate({
 	    }
 	}
 });
+
 setTimeout(function() {
 	$('form').on('reset', function() {
 		$(this).find('select').val('');
 	});
 }, 100);
+
+setTimeout(function() {
+	$('form').find('textarea').on('input propertychange', function() {
+		$(this).valid();
+	});
+}, 1000);
 
 
 

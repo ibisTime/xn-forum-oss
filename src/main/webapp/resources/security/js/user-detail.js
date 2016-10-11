@@ -1,6 +1,10 @@
 $(function() {
 	var userId = getQueryString("userId");
-	$('#idKind').renderDropdown(Dict.getIDKindName());
+	$('#roleId').renderDropdown({
+		url: $("#basePath").val() + '/role/list',
+		keyName: 'code',
+		valueName: 'name'
+	});
 	//新增修改判断
 	if(isBlank(userId)){
 		$("#operate").val("add");
@@ -39,27 +43,6 @@ $(function() {
 				required: true,
 				maxlength: 16
 			},
-			mobile: {
-				required: true,
-				maxlength: 16
-			},
-			idKind: {
-				required: true,
-				maxlength: 2
-			},
-			idNo: {
-				required: true,
-				maxlength: 32
-			},
-			realName: {
-				required: true,
-				maxlength: 16,
-				chinese:true
-			},
-			userReferee: {
-				required: false,
-				maxlength: 32
-			},
 			remark: {
 				maxlength: 200
 			}
@@ -70,11 +53,6 @@ $(function() {
 function doGetDetailBack(res){
 	if (res.success) {
 		$("#userId").val(res.data.userId);	
-		$('#mobile').replaceWith($('<span>'+res.data.mobile+'</span>'));
-		$('#idKind').replaceWith($('<span>'+(res.data.idKind ? Dict.getIDKindName(res.data.idKind) : '-')+'</span>'));
-		$('#idNo').replaceWith($('<span>'+res.data.idNo+'</span>'));
-		$('#realName').replaceWith($('<span>'+res.data.realName+'</span>'));
-		$('#userReferee').replaceWith($('<span>'+res.data.userReferee+'</span>'));
 		$("#remark").val(res.data.remark);
 	}else{
 		alert(res.msg);

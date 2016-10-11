@@ -544,7 +544,7 @@ $.fn.html = function(value) {
 
 // 压缩图片
 function zipImg(file, pos) {
-	if (file.type == 'image/gif') {
+	if (true) {
 		var reader = new FileReader();
 		reader.onload = function(evt){
 			var image = evt.target.result;
@@ -580,6 +580,16 @@ function getAccountId(userId, currency) {
 	return res1;
 }
 
+function getCityId(userId) {
+	var res1;
+	ajaxGet($('#basePath').val() + '/general/city/list', {
+		userId: userId
+	}, false, true).then(function(res) {
+		res1 = res.data.length > 0 ? res.data[0].code : '';
+	});
+	return res1;
+}
+
 function objectArrayFilter(arr, keys) {
 	keys = keys.split(',');
 	var newArr = [];
@@ -589,4 +599,307 @@ function objectArrayFilter(arr, keys) {
 		}
 	});
 	return newArr;
+}
+
+function buildList(router, columns) {
+	
+	var html = '<ul>';
+	var dropDownList = [];
+	for (var i = 0, len = columns.length; i < len; i++) {
+		var item = columns[i];
+		if (item.search) {
+			if (item.key) {
+				dropDownList.push([item.field, item.key]);
+				html += '<li><label>'+item.title+'</label><select id="'+item.field+'" name="'+item.field+'"></select></li>';
+			} else if (item.type == 'date') {
+				
+			} else {
+				html += '<li><label>'+item.title+'</label><input id="'+item.field+'" name="'+item.field+'" type="text"/></li>';
+			}
+		}
+		
+		
+	}
+	html += '<li><input id="searchBtn" type="button" class="btn" value="查询" /><input type="reset" class="btn" value="重置" /></li></ul>';
+	$('.search-form').append(html);
+	
+	for (var i = 0, len = dropDownList.length; i < len; i++) {
+		var item = dropDownList[i];
+		$('#' + item[0]).renderDropdown(Dict.getName(item[1]));
+	}
+	
+	$('#searchBtn').click(function() {
+		$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
+	});
+	
+	$('#addBtn').click(function() {
+		window.location.href = $("#basePath").val()+ router + "_addedit.htm";
+	});
+	
+	$('#editBtn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections');
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		window.location.href = $("#basePath").val()+ router + "_addedit.htm?code="+selRecords[0].code;
+	});
+	
+	$('#deleteBtn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections');
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		
+		if(!confirm("确认是否删除该记录？")){
+    		return false;
+    	}
+    	var url = $("#basePath").val()+ router + '/delete';
+    	var data = {code:selRecords[0].code};
+		ajaxPost(url, data).then(function(res) {
+			if (res.success) {
+				alert('操作成功');
+				$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
+			} else {
+				alert(res.msg);
+			}
+		});
+	});
+	
+	$('#detailBtn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections');
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		location.href = $("#basePath").val() + router + "_detail.htm?code=" + selRecords[0].code;
+	});
+
+	$('#tableList').bootstrapTable({
+		method : "get",
+		url : $("#basePath").val() + router + '/page',
+		striped : true,
+		clickToSelect : true,
+		singleSelect : true,
+		queryParams : function(params) {
+			return $.extend({
+				start : params.offset / params.limit + 1,
+				limit : params.limit
+			}, $('.search-form').serializeObject());
+		},
+		queryParamsType : 'limit',
+		responseHandler : function(res) {
+			return {
+				rows : res.data.list,
+				total : res.data.totalCount
+			};
+		},
+		pagination : true,
+		sidePagination : 'server',
+		totalRows : 0,
+		pageNumber : 1,
+		pageSize : 10,
+		pageList : [ 10, 20, 30, 40, 50 ],
+		columns : columns
+	});
+}
+
+function selectImage(file,name){
+	file.blur();
+	if(!file.files || !file.files[0]){
+		name.src = '';
+		return;
+	}
+	zipImg(file.files[0], document.getElementById(name) || name);
+}
+
+function buildDetail(router, fields, code) {
+	var html = '<input type="hidden" id="code" name="code" class="control-def" />';
+	var dropDownList = [], rules = {}, textareaList = [];
+	for (var i = 0, len = fields.length; i < len; i++) {
+		var item = fields[i];
+		rules[item.field] = {};
+		if (item.type == 'img') {
+			rules[item.field + 'Img'] = {};
+			rules[item.field + 'Img'].required = item.required;
+		}
+		if (item.required) {
+			
+			rules[item.field].required = item.required;
+		}
+		
+		if (item.maxlength) {
+			rules[item.field].maxlength = item.maxlength;
+		}
+		
+		if (item.number) {
+			rules[item.field].number = item.number;
+		}
+		
+		html += '<li><label>'+(item.title ? ('<b>'+ ((item.required && '*') || '') +'</b>'+item.title+':') : '')+'</label>';
+		
+		if (item.type == 'select') {
+			dropDownList.push({field: item.field, key: item.key, url: item.url, keyName: item.keyName, valueName: item.valueName});
+			html += '<select id="'+item.field+'" name="'+item.field+'" class="control-def"></select></li>';
+		} else if (item.type == 'img') {
+			html += '<div class="btn-file"><span>选择图片</span>' +
+		    	'<input type="file" id="'+item.field+'Img" name="'+item.field+'Img" onchange="selectImage(this,'+item.field+');" />' +
+		    	'</div><img src="" id="'+item.field+'" /></li>';
+		} else if (item.type == 'textarea') {
+			textareaList.push({field: item.field});
+			html += '<textarea id="'+item.field+'" name="'+item.field+'" style="width:800px;height:250px;float:left"></textarea></li>';
+		} else if (item.type == 'citySelect') {
+			html += '<div id="city-group"><select id="province" name="province" class="control-def prov"></select>' +
+			    '<select id="city" name="city" class="control-def city"></select>' +
+			    '<select id="area" name="area" class="control-def dist"></select></div></li>';
+			if (item.required) {
+				rules.province = {required: true};
+				rules.city = {required: true};
+				rules.area = {required: true};
+			}
+			
+		} else {
+			html += '<input id="'+item.field+'" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>';
+		}
+	}
+	html += '<li><input id="subBtn" type="button" class="btn margin-left-100" value="保存"/><input id="backBtn" type="button" class="btn margin-left-20" value="返回"/></li>';
+	$('.form-info').append(html);
+	
+	$('#backBtn').click(function() {
+		goBack();
+	});
+	$('#subBtn').click(function() {
+		if ($('#jsForm').valid()) {
+			var data = $('#jsForm').serializeObject();
+			$('#jsForm').find('input[type=file]').parent().next().each(function(i, el) {
+				data[el.id] = $(el).attr('src');
+			});
+			if ($('#jsForm').find('#province')[0]) {
+				var province = $('#province').val();
+				var city = $('#city').val();
+				var area = $('#area').val();
+				if (!city) {
+					data['city'] = province;
+					data['area'] = province;
+				} else if (!area) {
+					data['city'] = province;
+					data['area'] = city;
+				} 
+			}
+			var url = $("#basePath").val()+ router + "/" + (code ? 'edit' : 'add');
+			ajaxPost(url, data).then(function(res) {
+				if (res.success) {
+					alert("操作成功");
+					goBack();
+				}
+			});
+		}
+	});
+	$("#jsForm").validate({'rules': rules});
+	
+	for (var i = 0, len = dropDownList.length; i < len; i++) {
+		var item = dropDownList[i];
+		if (item.key) {
+			$('#' + item.field).renderDropdown(Dict.getName(item.key));
+		} else if (item.url) {
+			$('#' + item.field).renderDropdown({
+				url: item.url,
+				keyName: item.keyName,
+				valueName: item.valueName
+			});
+		}
+	}
+	
+	for (var i = 0, len = textareaList.length; i < len; i++) {
+		var item = textareaList[i];
+		UE.getEditor(item.field);
+	}
+	
+	$("#city-group").citySelect && $("#city-group").citySelect({
+		required:false
+	}); 
+	
+	if (code) {
+		doGetAjax($("#basePath").val()+ router + "/detail", {
+			code: code
+		}, function(res) {
+			if (res.success) {
+				var data = res.data;
+				$('#code').val(data.code);
+				for (var i = 0, len = fields.length; i < len; i++) {
+					var item = fields[i];
+					if (item.type == 'img') {
+						$('#' + item.field).attr('src', data[item.field]);
+					} else if (item.type == 'textarea') {
+						UE.getEditor(item.field).ready(function() {
+							UE.getEditor(item.field).setContent(data[item.field]);
+						});
+					} else if (item.type == 'citySelect') {
+						if (data.province == data.city && data.city == data.area) {
+							
+						} else if (data.province == data.city && data.city != data.area) {
+							data.city = data.area;
+						}
+						$('#province').val(data.province);
+						$('#province').trigger('change');
+						$('#city').val(data.city);
+						$('#city').trigger('change');
+						$('#area').val(data.area);
+					} else {
+						$('#' + item.field).val(data[item.field]);
+					}
+					
+				}
+			}
+		});
+	}
+}
+
+function buildDetailView(router, fields, code) {
+	if (code) {
+		doGetAjax($("#basePath").val()+ router + "/detail", {
+			code: code
+		}, function(res) {
+			if (res.success) {
+				var data = res.data;
+				$('#code').val(data.code);
+				for (var i = 0, len = fields.length; i < len; i++) {
+					var item = fields[i];
+					if (item.type == 'select' && !item.url) {
+						$('#' + item.field).html(Dict.getName(item.key, data[item.field]));
+					}
+					else if (item.type == 'select' && item.url) {
+						var params = {};
+						params[item.keyName] = data[item.field];
+						(function(i) {
+							ajaxGet(i.url, params).then(function(res) {
+								$('#' + i.field).html(res.data[i.valueName]);
+							});
+						})(item);
+						
+					} else if (item.type == 'img') {
+						$('#' + item.field).html(data[item.field] ? '<img src="'+data[item.field]+'" style="max-width: 300px;"></img>' : '-');
+					} else {
+						$('#' + item.field).html(data[item.field] || '-');
+					}
+					if (item.formatter) {
+						$('#' + item.field).html(item.formatter(data[item.field], data));
+					}
+				}
+			}
+		});
+	}
+	var html = '<input type="hidden" id="code" name="code" class="control-def" />';
+	for (var i = 0, len = fields.length; i < len; i++) {
+		var item = fields[i];
+		var value = '';
+		html += '<li><label>'+item.title+':</label><span id="'+item.field+'" name="'+item.field+'"></span></li>';
+	}
+	html += '<li><input id="backBtn" type="button" class="btn margin-left-20" value="返回"/></li>';
+	$('.form-info').append(html);
+	
+	$('#backBtn').click(function() {
+		goBack();
+	});
 }

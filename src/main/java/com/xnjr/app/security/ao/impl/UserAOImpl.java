@@ -1,6 +1,7 @@
 package com.xnjr.app.security.ao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -96,7 +97,7 @@ public class UserAOImpl implements IUserAO {
     }
 
     @Override
-    public Object addUser(String loginName, String mobile, String idKind,
+    public Map addUser(String loginName, String mobile, String idKind,
             String idNo, String realName, String userReferee, String updater,
             String remark, String kind, String pdf) {
         XN805042Req req = new XN805042Req();
@@ -114,7 +115,7 @@ public class UserAOImpl implements IUserAO {
         }
 
         return BizConnecter.getBizData("805042", JsonUtils.object2Json(req),
-            Object.class);
+            Map.class);
     }
 
     @Override

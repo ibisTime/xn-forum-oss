@@ -29,13 +29,6 @@ $(function() {
 				maxlength: 12,
 				minlength: 6
 			}
-		},
-		messages: {
-			adminPwd: {
-				required: "请输入管理员交易密码",
-				maxlength: jQuery.format("密码不能大于{0}个字符"),
-				minlength: jQuery.format("密码不能小于{0}个字符")
-			}
 		}
 	});
 });
@@ -45,6 +38,6 @@ function doSuccessBack(res) {
 		alert("操作成功");
 		window.location.href = $("#basePath").val()+"/security/user.htm";
 	}else{
-		alert('管理员交易密码错误！');
+		alert(res.msg);
 	}
 }

@@ -2,14 +2,88 @@
 var rem=[];
 $(function() {
 	//按钮权限判断
+	var dictMap = {};
 	showPermissionControl();
 	var url =$("#basePath").val()+"/general/dict/list";
 	doGetAjaxIsAsync(url, {"type":"0"} ,false, function(res) {
-		$('#keySearch').renderDropdown(res.data, 'dkey', 'dkey');
+		$('#keySearch').renderDropdown(res.data, 'dkey', 'dvalue');
+		for (var i = 0, len = res.data.length; i < len; i++) {
+			var item = res.data[i];
+			dictMap[item.dkey] = item.dvalue;
+		}
 	});
 	
 	//列表查询
-	queryTableData();
+	$('#tableList').bootstrapTable({
+		method : "get",
+		url : $("#basePath").val()+"/general/dict/page",
+		 
+		striped : true,
+		singleSelect : true,
+		clickToSelect : true,
+		queryParams : function(params) {
+			return {
+				parentKey : $("#keySearch").val(),
+				//type:1,
+				start : params.offset / params.limit + 1,
+				limit : params.limit
+			};
+		},
+		queryParamsType : 'limit',
+		responseHandler : function(res) {
+			return {
+				rows : res.data.list,
+				total : res.data.totalCount
+			};
+		},
+		pagination : true,
+		sidePagination : 'server', // 服务端请求
+		totalRows : 0,
+		pageNumber : 1,
+		pageSize : 10,
+		pageList : [ 10, 20, 30, 40, 50 ],
+		columns : [{
+			field : '',
+			title : '',
+			checkbox : true
+		}, {
+			field : 'parentKey',
+			title : '种类',
+			sortable : false,
+			formatter: function(v) {
+				return dictMap[v] || '-';
+			}
+		}, {
+			field : 'dkey',
+			title : '字典键 ',
+			sortable : false
+		}, {
+			field : 'dvalue',
+			title : '字典值 ',
+			align : 'left',
+			valign : 'middle',
+			sortable : false
+		},{
+			field : 'updater',
+			title : '更新者',
+			align : 'left',
+			valign : 'middle',
+			sortable : false
+		},{
+			field : 'updateDatetime',
+			title : '更新时间',
+			align : 'left',
+			formatter : dateFormatter,
+			valign : 'middle',
+			sortable : false
+		},{
+			field : 'remark',
+			title : '备注',
+			align : 'left',
+			valign : 'middle',
+			sortable : false
+		}]
+	});
 	 $('#tableList').bootstrapTable('refresh');
 	//查询
 	$('#searchBtn').click(function() {
@@ -49,77 +123,6 @@ $(function() {
 	
 	$()
 });
-//表格初始化
-function queryTableData(){
-	// 绑定列表
-	$('#tableList').bootstrapTable({
-		method : "get",
-		url : $("#basePath").val()+"/general/dict/page",
-		 
-		striped : true,
-		singleSelect : true,
-		clickToSelect : true,
-		queryParams : function(params) {
-			return {
-				parentKey : $("#keySearch").val(),
-				//type:1,
-				start : params.offset / params.limit + 1,
-				limit : params.limit
-			};
-		},
-		queryParamsType : 'limit',
-		responseHandler : function(res) {
-			return {
-				rows : res.data.list,
-				total : res.data.totalCount
-			};
-		},
-		pagination : true,
-		sidePagination : 'server', // 服务端请求
-		totalRows : 0,
-		pageNumber : 1,
-		pageSize : 10,
-		pageList : [ 10, 20, 30, 40, 50 ],
-		columns : [{
-			field : '',
-			title : '',
-			checkbox : true
-		}, {
-			field : 'parentKey',
-			title : '种类',
-			sortable : false
-		}, {
-			field : 'dkey',
-			title : '字典键 ',
-			sortable : false
-		}, {
-			field : 'dvalue',
-			title : '字典值 ',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		},{
-			field : 'updater',
-			title : '更新者',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		},{
-			field : 'updateDatetime',
-			title : '更新时间',
-			align : 'left',
-			formatter : dateFormatter,
-			valign : 'middle',
-			sortable : false
-		},{
-			field : 'remark',
-			title : '备注',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		}]
-	});
-}
 
 
 //时间格式化

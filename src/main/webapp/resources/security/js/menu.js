@@ -132,19 +132,6 @@ function queryTableData(){
 			align : 'left',
 			valign : 'middle',
 			sortable : false
-		},{
-			field : 'updater',
-			title : '更新者',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		},{
-			field : 'updateDatetime',
-			title : '更新时间',
-			align : 'left',
-			valign : 'middle',
-			sortable : false,
-			formatter: dateTimeFormat
 		}, {
 			field : 'remark',
 			title : '备注',

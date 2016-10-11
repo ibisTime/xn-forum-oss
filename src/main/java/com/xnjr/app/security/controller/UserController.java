@@ -132,7 +132,8 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public Object addUser(@RequestParam("loginName") String loginName,
+    public Map addUser(@RequestParam("loginName") String loginName,
+    		@RequestParam("roleId") String roleId,
             @RequestParam(value = "mobile", required = false) String mobile,
             @RequestParam(value = "idKind", required = false) String idKind,
             @RequestParam(value = "idNo", required = false) String idNo,
@@ -141,9 +142,12 @@ public class UserController extends BaseController {
             @RequestParam(value = "remark", required = false) String remark,
             // @RequestParam(value = "kind", required = false) String kind,
             @RequestParam(value = "pdf", required = false) String pdf) {
-        return userAO.addUser(loginName, mobile, idKind, idNo, realName,
+        Map user = userAO.addUser(loginName, mobile, idKind, idNo, realName,
             userReferee, this.getSessionUser().getUserName(), remark,
             EUserKind.Operator.getCode(), pdf);
+        userAO.allotRole((String)user.get("userId"), roleId,
+                this.getSessionUser().getUserName(), remark);
+        return user;
     }
 
     @RequestMapping(value = "/drop", method = RequestMethod.POST)

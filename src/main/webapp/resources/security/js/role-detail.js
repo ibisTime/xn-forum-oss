@@ -1,5 +1,5 @@
 $(function() {
-	$('#level').renderDropdown(Dict.getRoleLevelName());
+	$('#level').renderDropdown(Dict.getName('role_level'));
 	
 	//获取菜单URL入参
 	var code = getQueryString("code");

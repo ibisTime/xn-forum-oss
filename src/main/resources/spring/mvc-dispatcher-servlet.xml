@@ -184,6 +184,22 @@
 		    <mvc:mapping path="/vendor/**"/>
 		    <!-- 商家相关end -->
 		    
+		    <!-- 视图相关start -->
+		    <mvc:mapping path="/view/**"/>
+		    <!-- 视图相关end -->
+		    
+		    <!-- 视图相关start -->
+		    <mvc:mapping path="/score/**"/>
+		    <!-- 视图相关end -->
+		    
+		    <!-- 论坛相关start -->
+		    <mvc:mapping path="/forum/**"/>
+		    <!-- 论坛相关end -->
+		    
+		    <!-- 城市相关start -->
+		    <mvc:mapping path="/city/**"/>
+		    <!-- 城市相关end -->
+		    
 		    <!-- 合同相关start -->
 		    <mvc:mapping path="/contract/**"/>
 		    <!-- 合同相关end -->

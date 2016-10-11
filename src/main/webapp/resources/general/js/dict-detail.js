@@ -72,7 +72,7 @@ function initData(){
 	//父编号
 	var url =$("#basePath").val()+"/general/dict/list";
 	doGetAjaxIsAsync(url,{"type":"0"},false, function(res) {
-		$('#parentKey').renderDropdown(res.data, 'dkey', 'dkey', '<option value="0">选此创建种类</option>');
+		$('#parentKey').renderDropdown(res.data, 'dkey', 'dvalue', '<option value="0">选此创建种类</option>');
 		$('#parentKey').on('change', function() {
 			$('#type').val(this.value == 0 ? '0' : '1');
 		});

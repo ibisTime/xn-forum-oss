@@ -9,6 +9,7 @@
 package com.xnjr.app.security.ao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xnjr.app.security.res.XN805043Res;
 import com.xnjr.app.security.res.XN805055Res;
@@ -90,7 +91,7 @@ public interface IUserAO {
      * @create: 2016年5月31日 上午8:19:47 xieyj
      * @history:
      */
-    public Object addUser(String loginName, String mobile, String idKind,
+    public Map addUser(String loginName, String mobile, String idKind,
             String idNo, String realName, String userReferee, String updater,
             String remark, String kind, String pdf);
 

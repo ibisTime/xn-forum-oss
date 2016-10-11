@@ -59,7 +59,7 @@ $(function() {
 //数据字典初始化
 function initData(){
 	//获取数据字典
-	$('#level').renderDropdown(Dict.getRoleLevelName());
+	$('#level').renderDropdown(Dict.getName('role_level'));
 }
 
 // 下拉框初始化数据
@@ -99,7 +99,7 @@ function queryTableData(){
 		align : 'left',
 		valign : 'middle',
 		sortable : false,
-		formatter : roleLevelFormatter
+		formatter : Dict.getNameForList('role_level')
 	}, {
 		field : 'updater',
 		title : '更新人',
@@ -154,15 +154,6 @@ function queryTableData(){
 	});
 }
 
-//表格数据字典转化
-function roleLevelFormatter(value, row) {
-	var dictLevel=["","管理员级别","运营级别","财务级别"]
-	for(var i = 1;i < dictLevel.length;i++){
-		if(i == value){
-			return dictLevel[i];
-		}
-	}
-}
 
 //表格时间格式转化
 function dateFormatter(value, row){

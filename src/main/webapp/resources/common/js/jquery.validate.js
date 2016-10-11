@@ -260,13 +260,23 @@ $.extend($.validator, {
 		highlight: function( element, errorClass, validClass ) {
 			if ( element.type === "radio" ) {
 				this.findByName(element.name).addClass(errorClass).removeClass(validClass);
-			} else {
+			} else if (element.type === "file") {
+				$(element).parent('.btn-file').addClass(errorClass).removeClass(validClass);
+			} else if (element.type === "select-one") {
+				$('#' + element.id + '_chosen').addClass(errorClass).removeClass(validClass);
+				$(element).addClass(errorClass).removeClass(validClass);
+			}else {
 				$(element).addClass(errorClass).removeClass(validClass);
 			}
 		},
 		unhighlight: function( element, errorClass, validClass ) {
 			if ( element.type === "radio" ) {
 				this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+			} else if (element.type === "file") {
+				$(element).parent('.btn-file').removeClass(errorClass).addClass(validClass);
+			} else if (element.type === "select-one") {
+				$('#' + element.id + '_chosen').removeClass(errorClass).addClass(validClass);
+				$(element).addClass(errorClass).addClass(validClass);
 			} else {
 				$(element).removeClass(errorClass).addClass(validClass);
 			}
@@ -547,7 +557,7 @@ $.extend($.validator, {
 			var val = this.elementValue(element);
 			var result;
 			
-			if (element.style.display == 'none') {
+			if (element.nodeName != 'TEXTAREA' && element.style.display == 'none') {
 				return true;
 			}
 
@@ -1011,6 +1021,9 @@ $.extend($.validator, {
 			if ( element.nodeName.toLowerCase() === "select" ) {
 				// could be an array for select-multiple or a string, both are fine this way
 				var val = $(element).val();
+				return val && val.length > 0;
+			} else if (element.type === 'file' && element.id.indexOf('Img') > -1) {
+				var val = $('#' + element.id.replace('Img', '')).attr('src');
 				return val && val.length > 0;
 			}
 			if ( this.checkable(element) ) {

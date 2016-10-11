@@ -29,7 +29,9 @@ public class PropertiesUtil {
         // public static String ACCOUNT_SERVER = props
         // .getProperty("ACCOUNT_SERVER");
 
-        public static String MALL_URL = props.getProperty("MALL_URL");
+        public static String MAIL_URL = props.getProperty("MAIL_URL");
+        
+        public static String BASE_URL = props.getProperty("BASE_URL");
 
         public static String USER_URL = props.getProperty("USER_URL");
 

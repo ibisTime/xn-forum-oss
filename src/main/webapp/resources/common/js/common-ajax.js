@@ -173,8 +173,8 @@ function ajaxPost(url, param) {
 		if (!res.success) {
 			alert(res.msg);
 		}
-	}, function() {
-		alert(res.msg);
+	}, function(obj, error, msg) {
+		alert(msg);
 	});
 	return promise;
 }
@@ -191,8 +191,8 @@ function ajaxPost(url, param) {
 		if (!res.success) {
 			alert(res.msg);
 		}
-	}, function() {
-		alert(res.msg);
+	}, function(obj, error, msg) {
+		alert(msg);
 	});
 	return promise;
 }

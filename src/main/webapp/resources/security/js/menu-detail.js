@@ -4,7 +4,7 @@ $(function() {
 	//同步调用
 	doGetAjaxIsAsync(url, null,false, doSuccessPCodeBack);
 	
-	$('#kind').renderDropdown(Dict.getRoleKindName());
+	//$('#kind').renderDropdown(Dict.getRoleKindName());
 	
 	var menuCode = getQueryString('code');
 	//新增修改判断

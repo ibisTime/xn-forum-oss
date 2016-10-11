@@ -28,7 +28,7 @@ public class SystemAOImpl implements ISystemAO {
         req.setLimit(limit);
         req.setOrderDir(orderDir);
         req.setOrderColumn(orderColoum);
-        return BizConnecter.getBizData("lh5000", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809025", JsonUtils.object2Json(req),
             Object.class);
     }
 
@@ -41,7 +41,7 @@ public class SystemAOImpl implements ISystemAO {
         req.setNote(note);
         req.setRemark(remark);
         req.setUpdater(updater);
-        return BizConnecter.getBizData("lh5030", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809010", JsonUtils.object2Json(req),
             Object.class);
     }
 
@@ -54,7 +54,7 @@ public class SystemAOImpl implements ISystemAO {
         req.setNote(note);
         req.setUpdater(updater);
         req.setRemark(remark);
-        return BizConnecter.getBizData("lh5031", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809011", JsonUtils.object2Json(req),
             Object.class);
     }
 
@@ -68,13 +68,13 @@ public class SystemAOImpl implements ISystemAO {
         req.setLimit(limit);
         req.setOrderColumn(orderColumn);
         req.setOrderDir(orderDir);
-        return BizConnecter.getBizData("lh5032", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809015", JsonUtils.object2Json(req),
             Object.class);
     }
 
     @Override
     public Object querySystemParamDetail(String id) {
-        return BizConnecter.getBizData("lh5033",
+        return BizConnecter.getBizData("809016",
             JsonUtils.string2Json("id", id), Object.class);
     }
 

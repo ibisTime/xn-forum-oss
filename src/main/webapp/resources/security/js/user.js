@@ -4,7 +4,7 @@ $(function() {
 	
 	var roleList = [];
 	
-	$('#status').renderDropdown(Dict.getUserStatusName());
+	$('#status').renderDropdown(Dict.getName('user_status'));
 	
 	doGetAjaxIsAsync($("#basePath").val()+"/role/list", {}, false, function(res) {
 		roleList = res.data;
@@ -34,6 +34,13 @@ $(function() {
 			align : 'left',
 			valign : 'middle',
 			sortable : false
+		},  {
+			field : 'status',
+			title : '状态',
+			align : 'left',
+			valign : 'middle',
+			sortable : false,
+			formatter : Dict.getNameForList('user_status')
 		}, {
 			field : 'roleCode',
 			title : '角色',
@@ -41,51 +48,6 @@ $(function() {
 			valign : 'middle',
 			sortable : false,
 			formatter: renderRole
-		},{
-			field : 'realName',
-			title : '真实姓名',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		}, {
-			field : 'idKind',
-			title : '证件类型',
-			align : 'left',
-			valign : 'middle',
-			sortable : false,
-			formatter : Dict.getIDKindName
-		}, {
-			field : 'idNo',
-			title : '证件号',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		},{
-			field : 'mobile',
-			title : '手机号',
-			align : 'left',
-			valign : 'middle',
-			sortable : false,
-		},{
-			field : 'updater',
-			title : '更新人',
-			align : 'left',
-			valign : 'middle',
-			sortable : false
-		}, {
-			field : 'updateDatetime',
-			title : '更新时间',
-			align : 'left',
-			valign : 'middle',
-			sortable : false,
-			formatter : dateTimeFormat
-		}, {
-			field : 'status',
-			title : '状态',
-			align : 'left',
-			valign : 'middle',
-			sortable : false,
-			formatter : Dict.getUserStatusName
 		}, {
 			field : 'remark',
 			title : '备注',
@@ -151,6 +113,15 @@ $(function() {
 		location.href = $("#basePath").val()+"/security/user_detail.htm";
 	});
 	
+	$('#resetPwdBtn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections')
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		location.href = $("#basePath").val()+"/security/user_pwd_reset.htm?userId=" + selRecords[0].userId + '&loginName=' + selRecords[0].loginName;
+	});
+	
 	//代注册
 	$('#replaceAddBtn').click(function() {
 		location.href = $("#basePath").val()+"/security/user_replaceadd.htm";
@@ -167,7 +138,7 @@ $(function() {
 	});
 	
 	//锁定
-	$('#lockBtn').click(function() {
+	$('#cancelBtn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections')
 		if(selRecords.length <= 0){
 			alert("请选择记录");
@@ -205,7 +176,7 @@ $(function() {
 	});
 	
 	//更改角色
-	$('#changeRoleBtn').click(function() {
+	$('#setRoleBtn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections')
 		if(selRecords.length <= 0){
 			alert("请选择记录");

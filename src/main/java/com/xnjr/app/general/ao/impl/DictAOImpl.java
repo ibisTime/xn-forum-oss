@@ -28,13 +28,13 @@ public class DictAOImpl implements IDictAO {
         req.setDvalue(dvalue);
         req.setUpdater(updater);
         req.setRemark(remark);
-        return BizConnecter.getBizData("lh5010", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809000", JsonUtils.object2Json(req),
             Object.class);
     }
 
     @Override
     public Object dropDict(String id) {
-        return BizConnecter.getBizData("lh5011",
+        return BizConnecter.getBizData("809001",
             JsonUtils.string2Json("id", id), Object.class);
     }
 
@@ -46,7 +46,7 @@ public class DictAOImpl implements IDictAO {
         req.setDvalue(dvalue);
         req.setUpdater(updater);
         req.setRemark(remark);
-        return BizConnecter.getBizData("lh5012", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809002", JsonUtils.object2Json(req),
             Object.class);
     }
 
@@ -57,7 +57,7 @@ public class DictAOImpl implements IDictAO {
         req.setType(type);
         req.setParentKey(parentKey);
         req.setDkey(dkey);
-        String jsonStr = BizConnecter.getBizData("lh5014",
+        String jsonStr = BizConnecter.getBizData("809006",
             JsonUtils.object2Json(req));
         Gson gson = new Gson();
         List<XNlh5014Res> list = gson.fromJson(jsonStr,
@@ -75,7 +75,7 @@ public class DictAOImpl implements IDictAO {
         req.setDkey(dkey);
         req.setOrderColumn(orderColumn);
         req.setOrderDir(orderDir);
-        return BizConnecter.getBizData("lh5014", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809006", JsonUtils.object2Json(req),
             List.class);
     }
 
@@ -90,13 +90,13 @@ public class DictAOImpl implements IDictAO {
         req.setStart(start);
         req.setOrderColumn(orderColumn);
         req.setOrderDir(orderDir);
-        return BizConnecter.getBizData("lh5013", JsonUtils.object2Json(req),
+        return BizConnecter.getBizData("809005", JsonUtils.object2Json(req),
             Object.class);
     }
 
     @Override
     public Object queryDictDetail(String id) {
-        return BizConnecter.getBizData("lh5015",
+        return BizConnecter.getBizData("809007",
             JsonUtils.string2Json("id", id), Object.class);
     }
 
