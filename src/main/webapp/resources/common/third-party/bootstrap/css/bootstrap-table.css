@@ -209,6 +209,7 @@
     z-index: 99;
     background-color: #fff;
     text-align: center;
+    line-height: 35px;
 }
 
 .fixed-table-body .card-view .title {

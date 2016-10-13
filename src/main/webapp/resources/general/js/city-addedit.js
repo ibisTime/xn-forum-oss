@@ -20,7 +20,7 @@ $(function() {
 		field: 'location',
 		required: true,
 		type: 'select',
-		key: 'city_priority'
+		key: 'city_location'
 	}, {
 		title: '电话',
 		field: 'mobile',
@@ -68,7 +68,7 @@ $(function() {
 //		required:false
 //	}); 
 //	var description = UE.getEditor('description');
-//	$('#location').renderDropdown(Dict.getName('city_priority'));
+//	$('#location').renderDropdown(Dict.getName('city_location'));
 //	$('#userId').renderDropdown({
 //		url: $("#basePath").val() + '/user/list?roleCode=SR201600000000000002',
 //		keyName: 'userId',

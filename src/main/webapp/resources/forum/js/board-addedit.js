@@ -2,13 +2,18 @@ $(function() {
 	
 	var code = getQueryString('code');
 	var router = '/forum/board';
+	var cityId = getCityId(getUserId());
 	
 	var fields = [{
+		field: 'siteCode',
+		type: 'hidden',
+		value: cityId
+	}, {
 		title: '大类',
 		field: 'kind',
 		required: true,
 		type: 'select',
-		key: 'board_category'
+		key: 'plate_kind'
 	}, {
 		title: '名称',
 		field: 'name',
@@ -25,7 +30,7 @@ $(function() {
 		field: 'location',
 		required: true,
 		type: 'select',
-		key: 'board_location'
+		key: 'plate_location'
 	}, {
 		title: '顺序',
 		field: 'orderNo',

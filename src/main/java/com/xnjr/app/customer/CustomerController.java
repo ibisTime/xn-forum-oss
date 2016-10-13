@@ -24,9 +24,27 @@ public class CustomerController extends BaseController {
     // 列表查询视图信息
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public Object viewList(@RequestParam Map<String,String> allRequestParams) {
+    public Object customerList(@RequestParam Map<String,String> allRequestParams) {
     	allRequestParams.put("kind", EUserKind.F1.getCode());
   	    return BizConnecter.getBizData("805055", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
+    // 分页查询视图信息
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @ResponseBody
+    public Object customerPage(@RequestParam Map<String,String> allRequestParams) {
+    	allRequestParams.put("kind", EUserKind.F1.getCode());
+  	    return BizConnecter.getBizData("805054", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
+    // 分页查询视图信息(地区)
+    @RequestMapping(value = "/branch/page", method = RequestMethod.GET)
+    @ResponseBody
+    public Object customerBranchPage(@RequestParam Map<String,String> allRequestParams) {
+    	//allRequestParams.put("kind", EUserKind.F1.getCode());
+  	    return BizConnecter.getBizData("805077", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
 }

@@ -13,9 +13,9 @@ $(function(){
 	},{
 		field : 'kind',
 		title : '大类',
-		formatter: Dict.getNameForList('board_category'),
+		formatter: Dict.getNameForList('plate_kind'),
 		search: true,
-		key: 'board_category'
+		key: 'plate_kind'
     },{
     	field : 'status',
 		title : '状态',
@@ -29,6 +29,10 @@ $(function(){
 		field : 'userId',
 		title : '版主'
 	}];
-	buildList(router, columns);
+	buildList(router, columns, {
+		searchParams: {
+			'siteCode': getCityId(getUserId())
+		}
+	});
 })
 

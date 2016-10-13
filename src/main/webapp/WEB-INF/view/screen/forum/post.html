@@ -7,23 +7,26 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8"/>
 <title></title>
 <#include 'layout/resources.html'/>
-<script type="text/javascript" src="${resourceUrl}/resources/forum/js/board-addedit.js?version=${version}"></script>
+<script type="text/javascript" src="${resourceUrl}/resources/forum/js/post.js?version=${version}"></script>
 </head>
 <body>
-	<#include 'layout/hidden_ares.html' />
+	<#include 'layout/hidden_ares.html'/>
 	<div class="place">
 	    <span>位置：</span>
 	    <ul>
 	    </ul>
     </div>
-    <form id="jsForm">
-	    <div class="form-body">
-	    <div class="form-title"><span id="page-title"></span></div>
-		    <ul class="form-info">
-		    
-			</ul>
+    <div class="right-info">
+         <!-- 搜索表单 -->
+    	 <form class="search-form">
+    	</form>
+    	<!-- 操作按钮 -->
+    	<div class="tools">
+		   <ul class="toolbar">
+	       </ul>
 	    </div>
-    </form>
+	    <!-- 表格 -->
+	    <table id="tableList"></table>
+    </div>
 </body>
-
 </html>

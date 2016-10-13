@@ -196,6 +196,10 @@
 		    <mvc:mapping path="/forum/**"/>
 		    <!-- 论坛相关end -->
 		    
+		    <!-- 规则相关start -->
+		    <mvc:mapping path="/rule/**"/>
+		    <!-- 规则相关end -->
+		    
 		    <!-- 城市相关start -->
 		    <mvc:mapping path="/city/**"/>
 		    <!-- 城市相关end -->

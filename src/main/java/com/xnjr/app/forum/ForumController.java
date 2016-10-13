@@ -67,4 +67,38 @@ public class ForumController extends BaseController {
   	    return BizConnecter.getBizData("610047", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
+    
+    // 分页查询帖子
+    @RequestMapping(value = "/post/page", method = RequestMethod.GET)
+    @ResponseBody
+    public Object postPage(@RequestParam Map<String,String> allRequestParams) {
+    	//allRequestParams.put("userId", this.getSessionUser().getUserId());
+  	    return BizConnecter.getBizData("610070", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
+    // 帖子详情
+    @RequestMapping(value = "/post/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public Object postDetail(@RequestParam Map<String,String> allRequestParams) {
+  	    return BizConnecter.getBizData("610072", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
+    // 帖子审核
+    @RequestMapping(value = "/post/check", method = RequestMethod.POST)
+    @ResponseBody
+    public Object postCheck(@RequestBody Map map) {
+  		map.put("approver", this.getSessionUser().getUserId());
+  		return BizConnecter.getBizData("610055", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 帖子删除
+    @RequestMapping(value = "/post/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Object postdelete(@RequestBody Map map) {
+  		return BizConnecter.getBizData("610052", JsonUtils.mapToJson(map),
+              Object.class);
+	}
 }

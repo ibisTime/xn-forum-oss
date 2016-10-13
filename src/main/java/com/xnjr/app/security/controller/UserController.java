@@ -16,6 +16,8 @@ import com.google.gson.JsonObject;
 import com.xnjr.app.controller.BaseController;
 import com.xnjr.app.enums.EUserKind;
 import com.xnjr.app.exception.BizException;
+import com.xnjr.app.http.BizConnecter;
+import com.xnjr.app.http.JsonUtils;
 import com.xnjr.app.security.ao.IMenuRoleAO;
 import com.xnjr.app.security.ao.IRoleAO;
 import com.xnjr.app.security.ao.IUserAO;
@@ -266,4 +268,45 @@ public class UserController extends BaseController {
             @RequestParam(value = "loginName") String loginName) {
         return userAO.findPwdSMS(loginName);
     }
+    
+    // 等级新增
+    @RequestMapping(value = "/level/add", method = RequestMethod.POST)
+    @ResponseBody
+    public Object levelAdd(@RequestBody Map map) {
+  		return BizConnecter.getBizData("805110", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 等级删除
+    @RequestMapping(value = "/level/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Object levelDelete(@RequestBody Map map) {
+  		return BizConnecter.getBizData("805111", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 等级修改
+    @RequestMapping(value = "/level/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public Object levelEdit(@RequestBody Map map) {
+  		return BizConnecter.getBizData("805112", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 等级分页
+    @RequestMapping(value = "/level/page", method = RequestMethod.GET)
+    @ResponseBody
+    public Object levelPage(@RequestParam Map<String,String> allRequestParams) {
+  	    return BizConnecter.getBizData("805113", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
+    // 等级详情
+    @RequestMapping(value = "/level/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public Object levelList(@RequestParam Map<String,String> allRequestParams) {
+  	    return BizConnecter.getBizData("805114", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
 }

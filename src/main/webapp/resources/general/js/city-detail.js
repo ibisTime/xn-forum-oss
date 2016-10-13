@@ -16,7 +16,7 @@ $(function() {
 		title: '优先级',
 		field: 'location',
 		type: 'select',
-		key: 'city_priority'
+		key: 'city_location'
 	}, {
 		title: '电话',
 		field: 'mobile'
