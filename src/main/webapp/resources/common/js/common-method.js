@@ -784,6 +784,10 @@ function buildDetail(router, fields, code, options) {
 			rules[item.field].number = item.number;
 		}
 		
+		if (item.email) {
+			rules[item.field].email = item.email;
+		}
+		
 		if (item.min) {
 			rules[item.field].min = item.min;
 		}

@@ -135,6 +135,7 @@ required:必选项
 		};
 
 		// 设置省市json数据
+		$.ajaxSettings.async = false;
 		if(typeof(settings.url)=="string"){
 			$.getJSON(settings.url,function(json){
 				city_json=json;
@@ -144,5 +145,6 @@ required:必选项
 			city_json=settings.url;
 			init();
 		};
+		$.ajaxSettings.async = true;
 	};
 })(jQuery);

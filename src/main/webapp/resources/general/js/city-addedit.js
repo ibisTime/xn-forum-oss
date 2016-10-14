@@ -3,6 +3,10 @@ $(function() {
 	var router = '/general/city';
 	
 	var fields = [{
+		field: 'isDefault',
+		type: 'hidden',
+		defaultValue: '0'
+	}, {
 		title: '名称',
 		field: 'name',
 		required: true,
@@ -30,6 +34,7 @@ $(function() {
 		title: '邮箱',
 		field: 'email',
 		required: true,
+		email: true,
 		maxlength: 30
 	}, {
 		title: '地址',
