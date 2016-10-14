@@ -16,8 +16,14 @@ $(function() {
 		maxlength: 30,
 		number: true
 	}, {
-		title: '作用等级',
-		field: 'level',
+		field : 'level',
+		title : '作用等级',
+		type: 'select',
+		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
+		keyName: 'level',
+		valueName: 'level',
+		defaultOption: 'All',
+		defaultValue: '0',
 		required: true
 	}, {
 		title: '备注',

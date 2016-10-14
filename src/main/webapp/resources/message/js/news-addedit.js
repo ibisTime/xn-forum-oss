@@ -1,22 +1,29 @@
 $(function() {
 	
 	var code = getQueryString('code');
-	var router = '/rule/keyword';
+	var isGlobal = !getQueryString('b');
+	var router = '/message';
 	
 	var fields = [{
-		title: '关键字',
-		field: 'word',
+		title: '标题',
+		field: 'title',
 		required: true,
 		maxlength: 30
 	}, {
-		title: '权重',
-		field: 'weight',
+		title: '内容',
+		field: 'content',
 		required: true,
-		number: true,
-		min: 0,
-		max: 1
+		type: 'textarea'
 	}, {
-		field : 'level',
+		title: '类型',
+		field: 'type',
+		required: true,
+		type: 'select',
+		key: 'msg_type',
+		value: '2',
+		hidden: true
+	}, {
+		field : 'toLevel',
 		title : '作用等级',
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
@@ -26,16 +33,18 @@ $(function() {
 		defaultValue: '0',
 		required: true
 	}, {
-		title: '反应',
-		field: 'reaction',
-		required: true,
-		type: 'select',
-		key: 'kw_reaction'
-	}, {
 		title: '备注',
 		field: 'remark',
 		maxlength: 250
 	}];
+	
+	if (!isGlobal) {
+		fields.push({
+			field: 'companyCode',
+			type: 'hidden',
+			value: getCityId(getUserId())
+		});
+	}
 	
 	buildDetail(router, fields, code);
 	

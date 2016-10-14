@@ -403,6 +403,7 @@ $.fn.renderDropdown = function(data, keyName, valueName, defaultOption) {
 		param = data.param || {};
 		keyName = data.keyName;
 		valueName = data.valueName;
+		defaultOption = data.defaultOption;
 	}
 	if(url) {
 		ajaxGet(url, param, false, true).then(function(res) {
@@ -420,6 +421,7 @@ $.fn.renderDropdown = function(data, keyName, valueName, defaultOption) {
 	if (value) {
 		this.val(value);
 	}
+	return data;
 };
 
 function renderLink(link, name) {
@@ -609,6 +611,13 @@ function buildList(router, columns, options) {
 	options = options || {};
 	var html = '<ul>';
 	var dropDownList = [];
+	var urlParams = options.urlParams;
+	var urlParamsStr = '';
+	if (urlParams) {
+		for (var i in urlParams) {
+			urlParamsStr += '&' + i + '=' + urlParams[i];
+		}
+	}
 	for (var i = 0, len = columns.length; i < len; i++) {
 		var item = columns[i];
 		if (item.amount) {
@@ -616,7 +625,7 @@ function buildList(router, columns, options) {
 		}
 		if (item.search) {
 			if (item.key || item.type == 'select') {
-				dropDownList.push({field: item.field, key: item.key, url: item.url, keyName: item.keyName, valueName: item.valueName});
+				dropDownList.push(item);
 				html += '<li><label>'+item.title+'</label><select id="'+item.field+'" name="'+item.field+'"></select></li>';
 			} else if (item.type == 'date') {
 				
@@ -635,11 +644,22 @@ function buildList(router, columns, options) {
 		if (item.key) {
 			$('#' + item.field).renderDropdown(Dict.getName(item.key));
 		} else if (item.url) {
-			$('#' + item.field).renderDropdown({
+			var data = $('#' + item.field).renderDropdown($.extend({
 				url: item.url,
 				keyName: item.keyName,
 				valueName: item.valueName
-			});
+			}, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
+			var dataDict = {};
+			if (item.defaultOption) {
+				dataDict['0'] = item.defaultOption;
+			}
+			for (var j = 0, len1 = data.length; j < len1; j++) {
+				dataDict[data[j][item.keyName]] = data[j][item.valueName];
+			}
+			
+			item.formatter = function(v) {
+				return dataDict[v];
+			};
 		}
 	}
 	
@@ -648,7 +668,7 @@ function buildList(router, columns, options) {
 	});
 	
 	$('#addBtn').click(function() {
-		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm";
+		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm?-=-" + urlParamsStr;
 	});
 	
 	$('#editBtn').click(function() {
@@ -657,7 +677,7 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
-		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm?code="+selRecords[0].code;
+		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm?code="+selRecords[0].code + urlParamsStr;
 	});
 	
 	$('#deleteBtn').click(function() {
@@ -688,7 +708,7 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
-		location.href = $("#basePath").val() + (options.pageRouter || router) + "_detail.htm?code=" + selRecords[0].code;
+		location.href = $("#basePath").val() + (options.pageRouter || router) + "_detail.htm?code=" + selRecords[0].code + urlParamsStr;
 	});
 	
 	$('#checkBtn').click(function() {
@@ -697,7 +717,7 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
-		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_check.htm?code="+selRecords[0].code;
+		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_check.htm?code="+selRecords[0].code + urlParamsStr;
 	});
 
 	$('#tableList').bootstrapTable({
@@ -787,7 +807,7 @@ function buildDetail(router, fields, code, options) {
 			if (item.type == 'hidden') {
 				html = '<input type="hidden" id="'+item.field+'" name="'+item.field+'"/>' + html;
 			} else if (item.type == 'select') {
-				dropDownList.push({field: item.field, key: item.key, url: item.url, keyName: item.keyName, valueName: item.valueName});
+				dropDownList.push(item);
 				html += '<select id="'+item.field+'" name="'+item.field+'" class="control-def"></select></li>';
 			} else if (item.type == 'img') {
 				html += '<div class="btn-file"><span>选择图片</span>' +
@@ -873,11 +893,11 @@ function buildDetail(router, fields, code, options) {
 		if (item.key) {
 			$('#' + item.field).renderDropdown(Dict.getName(item.key));
 		} else if (item.url) {
-			$('#' + item.field).renderDropdown({
+			$('#' + item.field).renderDropdown($.extend({
 				url: item.url,
 				keyName: item.keyName,
 				valueName: item.valueName
-			});
+			}, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
 		}
 	}
 	
@@ -929,7 +949,8 @@ function buildDetail(router, fields, code, options) {
 							params[item.keyName] = data[item.field];
 							(function(i) {
 								ajaxGet(i.url, params).then(function(res) {
-									$('#' + i.field).html(res.data[i.valueName]);
+									var data = res.data.list[0] || res.data;
+									$('#' + i.field).html(data[i.valueName] || i.defaultOption);
 								});
 							})(item);
 							
@@ -937,7 +958,7 @@ function buildDetail(router, fields, code, options) {
 							$('#' + item.field).html(data[item.field] ? '<img src="'+data[item.field]+'" style="max-width: 300px;"></img>' : '-');
 						} else {
 							if (item.field in data) {
-								$('#' + item.field).html(item.amount ? moneyFormat(data[item.field]) : data[item.field]);
+								$('#' + item.field).html((item.amount ? moneyFormat(data[item.field]) : data[item.field]) || '-');
 							} else {
 								$('#' + item.field).html('-');
 							}
@@ -953,9 +974,11 @@ function buildDetail(router, fields, code, options) {
 						if (item.type == 'img') {
 							$('#' + item.field).attr('src', data[item.field]);
 						} else if (item.type == 'textarea') {
-							UE.getEditor(item.field).ready(function() {
-								UE.getEditor(item.field).setContent(data[item.field]);
-							});
+							(function(f) {
+								UE.getEditor(f).ready(function() {
+									UE.getEditor(f).setContent(data[f]);
+								});
+							})(item.field);
 						} else if (item.type == 'citySelect') {
 							if (data.province == data.city && data.city == data.area) {
 								

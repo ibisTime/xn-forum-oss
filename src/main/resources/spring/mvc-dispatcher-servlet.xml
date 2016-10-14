@@ -204,9 +204,14 @@
 		    <mvc:mapping path="/city/**"/>
 		    <!-- 城市相关end -->
 		    
-		    <!-- 合同相关start -->
-		    <mvc:mapping path="/contract/**"/>
-		    <!-- 合同相关end -->
+		    <!-- 城市相关start -->
+		    <mvc:mapping path="/city/**"/>
+		    <!-- 城市相关end -->
+		    
+		    <!-- 消息相关start -->
+		    <mvc:mapping path="/message/**"/>
+		    <!-- 消息相关end -->
+		    
 		    <mvc:mapping path="/bank/**"/>
 		    <mvc:mapping path="/subbank/**"/>
 			<mvc:mapping path="/gene/smscaptcha/send" />
