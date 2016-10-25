@@ -50,6 +50,10 @@ $(function() {
 		field: 'pic',
 		required: true,
 		type: 'img'
+	}, {
+		title: '备注',
+		field: 'remark',
+		maxlength: 200
 	}];
 	
 	buildDetail(router, fields, code);

@@ -4,6 +4,14 @@ $(function() {
 	var router = '/forum/post';
 	
 	var fields = [{
+		field: 'plateCode',
+		title: '版块',
+		type: 'select',
+		url: $('#basePath').val() + '/forum/board/list?siteCode=' + getCityId(getUserId()),
+		keyName: 'code',
+		valueName: 'name',
+		readonly: true
+	}, {
 		title: '标题',
 		field: 'title',
 		readonly: true
@@ -13,7 +21,7 @@ $(function() {
 		readonly: true
 	}, {
 		title: '图片',
-		field: 'pic',
+		field: 'picArr',
 		readonly: true,
 		type: 'img'
 	}, {
@@ -31,30 +39,6 @@ $(function() {
 		readonly: true,
 		type: 'select',
 		key: 'post_status'
-	}, {
-		title: '举报',
-		field: 'isReport',
-		readonly: true,
-		type: 'select',
-		key: 'true_false'
-	}, {
-		title: '推荐',
-		field: 'isHeadline',
-		readonly: true,
-		type: 'select',
-		key: 'true_false'
-	}, {
-		title: '置顶',
-		field: 'isTop',
-		readonly: true,
-		type: 'select',
-		key: 'true_false'
-	}, {
-		title: '精华',
-		field: 'isEssence',
-		readonly: true,
-		type: 'select',
-		key: 'true_false'
 	}, {
 		title: '复核人',
 		field: 'approver',
@@ -83,7 +67,8 @@ $(function() {
 			handler: function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
-					data.status = 1;
+					data.approveResult = 1;
+					data.type = 1;
 					var url = $("#basePath").val()+ router + "/check";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {
@@ -99,6 +84,7 @@ $(function() {
 				 $("#approveNote").rules("add",{required:false}); 
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
+					data.type = '1';
 					var url = $("#basePath").val()+ router + "/delete";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {
@@ -113,7 +99,8 @@ $(function() {
 			handler: function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
-					data.status = 0;
+					data.approveResult = 0;
+					data.type = 1;
 					var url = $("#basePath").val()+ router + "/check";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {

@@ -19,7 +19,12 @@ $(function(){
 		}
 		var data = $('#jsForm').serializeObject();
 		var url = $("#basePath").val()+"/general/system/param/" + $("#operate").val();
-		doPostAjax(url, data, doSuccessBack);
+		ajaxPost(url, data).then(function(res) {
+			if (res.success) {
+				alert("操作成功");
+				window.location.href = $("#basePath").val()+"/general/sys_param.htm";
+			}
+		});
 	});
 	
 	//返回

@@ -21,7 +21,7 @@ import com.xnjr.app.util.UploadUtil;
 @RequestMapping(value = "/customer")
 public class CustomerController extends BaseController {
     
-    // 列表查询视图信息
+    // 列表查询客户
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public Object customerList(@RequestParam Map<String,String> allRequestParams) {
@@ -30,7 +30,7 @@ public class CustomerController extends BaseController {
               Object.class);
     }
     
-    // 分页查询视图信息
+    // 分页查询客户
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ResponseBody
     public Object customerPage(@RequestParam Map<String,String> allRequestParams) {
@@ -39,7 +39,15 @@ public class CustomerController extends BaseController {
               Object.class);
     }
     
-    // 分页查询视图信息(地区)
+    // 详情查询客户
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public Object customerDetail(@RequestParam Map<String,String> allRequestParams) {
+  	    return BizConnecter.getBizData("805056", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
+    
+    // 分页查询客户(地区)
     @RequestMapping(value = "/branch/page", method = RequestMethod.GET)
     @ResponseBody
     public Object customerBranchPage(@RequestParam Map<String,String> allRequestParams) {

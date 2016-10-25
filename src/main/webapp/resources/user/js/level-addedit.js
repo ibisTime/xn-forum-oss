@@ -21,6 +21,12 @@ $(function() {
 		number: true,
 		maxlength: 15
 	}, {
+		title: '是否审核',
+		field: 'isCheck',
+		required: true,
+		type: 'select',
+		key: 'true_false'
+	}, {
 		title: '备注',
 		field: 'remark',
 		maxlength: 250

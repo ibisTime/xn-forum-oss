@@ -11,6 +11,14 @@ $(function(){
 	
 	// 登录
 	$('#loginBtn').click(function() {
+		if (!$('input[name=loginName]').val()) {
+			alert('请输入用户名');
+			return;
+		}
+		if (!$('input[name=loginPwd]').val()) {
+			alert('请输入密码');
+			return;
+		}
 		var data = {};
 		var t = $('#loginForm').serializeArray();
 		$.each(t, function() {

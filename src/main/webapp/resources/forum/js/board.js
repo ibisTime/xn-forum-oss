@@ -24,10 +24,15 @@ $(function(){
 		key: 'active_status'
     },{
     	field : 'orderNo',
-		title : '位置'
+		title : '位置',
+		formatter: Dict.getNameForList('plate_location'),
+		key: 'plate_location'
 	}, {
 		field : 'userId',
 		title : '版主'
+	}, {
+		field: 'remark',
+		title: '备注'
 	}];
 	buildList(router, columns, {
 		searchParams: {

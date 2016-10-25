@@ -26,7 +26,7 @@ public class CityController extends BaseController {
     	map.put("type", "1");
     	map.put("logo", UploadUtil.uploadPicture((String) map.get("logo")));
     	map.put("qrCode", UploadUtil.uploadPicture((String) map.get("qrCode")));
-    	map.put("updater", this.getSessionUser().getUserId());
+    	map.put("updater", this.getSessionUser().getUserName());
     	return BizConnecter.getBizData("806000", JsonUtils.mapToJson(map),
                 Object.class);
     }
@@ -46,7 +46,7 @@ public class CityController extends BaseController {
     	map.put("type", "1");
     	map.put("logo", UploadUtil.uploadPicture((String) map.get("logo")));
     	map.put("qrCode", UploadUtil.uploadPicture((String) map.get("qrCode")));
-    	map.put("updater", this.getSessionUser().getUserId());
+    	map.put("updater", this.getSessionUser().getUserName());
   		return BizConnecter.getBizData("806004", JsonUtils.mapToJson(map),
               Object.class);
 	}

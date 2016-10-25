@@ -22,8 +22,14 @@ $(function(){
 			return false;
 		}
 		var data = $('form').serializeObject();
+		data.id = id;
 		var url = $("#basePath").val()+"/general/dict/" + $("#operate").val();
-		doPostAjax(url, data, doSuccessBack);
+		ajaxPost(url, data).then(function(res) {
+			if (res.success) {
+				alert("操作成功");
+				window.location.href = $("#basePath").val()+"/general/dict.htm";
+			}
+		});
 	});
 	
 	//返回

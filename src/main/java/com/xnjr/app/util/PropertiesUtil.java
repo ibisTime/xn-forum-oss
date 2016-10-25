@@ -29,15 +29,11 @@ public class PropertiesUtil {
         // public static String ACCOUNT_SERVER = props
         // .getProperty("ACCOUNT_SERVER");
 
-        public static String MAIL_URL = props.getProperty("MAIL_URL");
-        
-        public static String BASE_URL = props.getProperty("BASE_URL");
+        public static String MAIN_URL = props.getProperty("MAIN_URL");
 
         public static String USER_URL = props.getProperty("USER_URL");
 
         public static String ACCOUNT_URL = props.getProperty("ACCOUNT_URL");
-
-        public static String SMS_URL = props.getProperty("SMS_URL");
 
         public static String URL_PREFIX = props.getProperty("URL_PREFIX");
 

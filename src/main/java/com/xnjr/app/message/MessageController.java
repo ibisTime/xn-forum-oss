@@ -25,7 +25,7 @@ public class MessageController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Object messageAdd(@RequestBody Map map) {
-  		map.put("updater", this.getSessionUser().getUserId());
+  		map.put("updater", this.getSessionUser().getUserName());
   		return BizConnecter.getBizData("805120", JsonUtils.mapToJson(map),
               Object.class);
 	}
@@ -42,7 +42,7 @@ public class MessageController extends BaseController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Object messageEdit(@RequestBody Map map) {
-  		map.put("updater", this.getSessionUser().getUserId());
+  		map.put("updater", this.getSessionUser().getUserName());
   		return BizConnecter.getBizData("805122", JsonUtils.mapToJson(map),
               Object.class);
 	}
@@ -51,7 +51,7 @@ public class MessageController extends BaseController {
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
     @ResponseBody
     public Object messagePublish(@RequestBody Map map) {
-  		map.put("updater", this.getSessionUser().getUserId());
+  		map.put("updater", this.getSessionUser().getUserName());
   		return BizConnecter.getBizData("805123", JsonUtils.mapToJson(map),
               Object.class);
 	}

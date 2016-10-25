@@ -7,23 +7,13 @@ $(function() {
 		field: 'word',
 		readonly: true
 	}, {
-		title: '权重',
-		field: 'weight',
+		title: '最近修改人',
+		field: 'updater',
 		readonly: true
 	}, {
-		field : 'level',
-		title : '作用等级',
-		type: 'select',
-		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
-		keyName: 'level',
-		valueName: 'level',
-		defaultOption: 'All',
-		readonly: true
-	}, {
-		title: '反应',
-		field: 'reaction',
-		type: 'select',
-		key: 'kw_reaction',
+		title: '最近修改时间',
+		field: 'updateDatetime',
+		formatter: dateTimeFormat,
 		readonly: true
 	}, {
 		title: '备注',

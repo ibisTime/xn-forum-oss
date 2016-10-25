@@ -113,7 +113,7 @@ $.validator.addMethod("Z+",function(value,element){
 
 $.validator.addMethod("amount",function(value,element){
 	var aint = '' + parseInt(value.replace(/[\,]/g, ''));
-    return /^\d+$/.test(aint) && aint.length <= 13;
+    return /^\d+$/.test(aint) && /^[\d\.\,]+$/.test(value + '') && aint.length <= 13;
 }, '金额必须>=0，且小于13位');
 
 //汉字

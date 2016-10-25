@@ -25,8 +25,8 @@ public class RuleController extends BaseController {
     @RequestMapping(value = "/keyword/add", method = RequestMethod.POST)
     @ResponseBody
     public Object keywordAdd(@RequestBody Map map) {
-  		map.put("updater", this.getSessionUser().getUserId());
-  		return BizConnecter.getBizData("610090", JsonUtils.mapToJson(map),
+  		map.put("updater", this.getSessionUser().getUserName());
+  		return BizConnecter.getBizData("610000", JsonUtils.mapToJson(map),
               Object.class);
 	}
     
@@ -34,8 +34,8 @@ public class RuleController extends BaseController {
     @RequestMapping(value = "/keyword/edit", method = RequestMethod.POST)
     @ResponseBody
     public Object keywordEdit(@RequestBody Map map) {
-  		map.put("updater", this.getSessionUser().getUserId());
-  		return BizConnecter.getBizData("610092", JsonUtils.mapToJson(map),
+  		map.put("updater", this.getSessionUser().getUserName());
+  		return BizConnecter.getBizData("610002", JsonUtils.mapToJson(map),
               Object.class);
 	}
     
@@ -43,7 +43,7 @@ public class RuleController extends BaseController {
     @RequestMapping(value = "/keyword/delete", method = RequestMethod.POST)
     @ResponseBody
     public Object keywordDelete(@RequestBody Map map) {
-  		return BizConnecter.getBizData("610091", JsonUtils.mapToJson(map),
+  		return BizConnecter.getBizData("610001", JsonUtils.mapToJson(map),
               Object.class);
 	}
 	
@@ -52,7 +52,7 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object keywordPage(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610100", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("610010", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -61,7 +61,7 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object keywordDetail(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610101", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("610011", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -70,8 +70,8 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object reportEdit(@RequestBody Map map) {
     	map.put("kind", "2");
-  		map.put("updater", this.getSessionUser().getUserId());
-  		return BizConnecter.getBizData("610110", JsonUtils.mapToJson(map),
+  		map.put("updater", this.getSessionUser().getUserName());
+  		return BizConnecter.getBizData("807720", JsonUtils.mapToJson(map),
               Object.class);
 	}
     
@@ -80,7 +80,7 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object reportPage(@RequestParam Map<String,String> allRequestParams) {
     	allRequestParams.put("kind", "2");
-  	    return BizConnecter.getBizData("610120", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("807725", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -89,7 +89,7 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object reportDetail(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610121", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("807727", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -98,8 +98,8 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object scoreEdit(@RequestBody Map map) {
     	map.put("kind", "1");
-  		map.put("updater", this.getSessionUser().getUserId());
-  		return BizConnecter.getBizData("610110", JsonUtils.mapToJson(map),
+  		map.put("updater", this.getSessionUser().getUserName());
+  		return BizConnecter.getBizData("807720", JsonUtils.mapToJson(map),
               Object.class);
 	}
     
@@ -108,7 +108,7 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object scorePage(@RequestParam Map<String,String> allRequestParams) {
     	allRequestParams.put("kind", "1");
-  	    return BizConnecter.getBizData("610120", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("807725", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -117,7 +117,7 @@ public class RuleController extends BaseController {
     @ResponseBody
     public Object scoreDetail(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610121", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("807727", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
 }

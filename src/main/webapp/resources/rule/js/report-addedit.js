@@ -14,7 +14,7 @@ $(function() {
 		title : '作用等级',
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
-		keyName: 'level',
+		keyName: 'code',
 		valueName: 'level',
 		defaultOption: 'All',
 		defaultValue: '0',

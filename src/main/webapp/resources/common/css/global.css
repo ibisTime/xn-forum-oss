@@ -323,3 +323,29 @@ input[type=file] {
 .btn-file.error {
 	border: 1px solid red;
 }
+
+.alert-warning {
+	color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.pop-form .form-info li label {
+	width: 80px;
+}
+
+.pop-form .form-info .btn {
+	margin-left: 10px;
+}
+
+.pop-form .form-body {
+	padding: 0px;
+}
+
+.pop-form .form-body .form-info {
+	padding: 0px;
+}

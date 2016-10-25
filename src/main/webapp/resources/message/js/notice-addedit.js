@@ -5,6 +5,10 @@ $(function() {
 	var router = '/message';
 	
 	var fields = [{
+		field: 'companyCode',
+		type: 'hidden',
+		value: isGlobal ? '0' : getCityId(getUserId())
+	},{
 		title: '标题',
 		field: 'title',
 		required: true,
@@ -23,12 +27,32 @@ $(function() {
 		value: '1',
 		hidden: true
 	}, {
+		field : 'toCompany',
+		title : '作用地区',
+		type: 'select',
+		url: $('#basePath').val() + '/general/city/page?start=1&limit=100000',
+		keyName: 'code',
+		valueName: 'name',
+		defaultOption: 'All',
+		defaultValue: '0',
+		required: true
+	}, {
 		field : 'toLevel',
 		title : '作用等级',
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
-		keyName: 'level',
-		valueName: 'level',
+		keyName: 'code',
+		valueName: 'name',
+		defaultOption: 'All',
+		defaultValue: '0',
+		required: true
+	}, {
+		field : 'toUser',
+		title : '作用人',
+		type: 'select',
+		url: $('#basePath').val() + '/customer/page?start=1&limit=100000',
+		keyName: 'userId',
+		valueName: 'loginName',
 		defaultOption: 'All',
 		defaultValue: '0',
 		required: true
@@ -39,11 +63,7 @@ $(function() {
 	}];
 	
 	if (!isGlobal) {
-		fields.push({
-			field: 'companyCode',
-			type: 'hidden',
-			value: getCityId(getUserId())
-		});
+		fields.push();
 	}
 	
 	buildDetail(router, fields, code);

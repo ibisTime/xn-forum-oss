@@ -15,6 +15,13 @@ $(function() {
 		field: 'amountMin',
 		readonly: true
 	}, {
+		title: '是否审核',
+		field: 'isCheck',
+		required: true,
+		type: 'select',
+		key: 'true_false',
+		readonly: true
+	}, {
 		title: '备注',
 		field: 'remark',
 		readonly: true

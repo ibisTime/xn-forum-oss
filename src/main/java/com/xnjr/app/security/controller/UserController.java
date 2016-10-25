@@ -83,10 +83,9 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/pwd/reset", method = RequestMethod.POST)
     @ResponseBody
-    public Object resetPwd(@RequestParam("mobile") String mobile,
-            @RequestParam("smsCaptcha") String smsCaptcha,
-            @RequestParam("newLoginPwd") String newLoginPwd) {
-        return userAO.resetLoginPwd(mobile, smsCaptcha, newLoginPwd);
+    public Map resetPwd(@RequestBody Map map) {
+    	return BizConnecter.getBizData("805078", JsonUtils.mapToJson(map),
+                Map.class);
     }
 
     @RequestMapping(value = "/tradePwd/change", method = RequestMethod.POST)

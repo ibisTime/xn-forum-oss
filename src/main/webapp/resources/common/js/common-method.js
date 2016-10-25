@@ -424,6 +424,14 @@ $.fn.renderDropdown = function(data, keyName, valueName, defaultOption) {
 	return data;
 };
 
+$.fn.renderDropdown2 = function(data, defaultOption) {
+	var html = "<option value=''>请选择</option>" + (defaultOption || '');
+	for (var k in data) {
+		html += "<option value='"+k+"'>"+data[k]+"</option>";
+	}
+	this.html(html);
+};
+
 function renderLink(link, name) {
 	return '<a href="'+link+'" target="_blank">'+name+'</a>';
 }
@@ -591,7 +599,7 @@ function getCityId(userId) {
 	ajaxGet($('#basePath').val() + '/general/city/list', {
 		userId: userId
 	}, false, true).then(function(res) {
-		res1 = res.data.length > 0 ? res.data[0].code : '';
+		res1 = res.data.length > 0 ? res.data[0].code: '';
 	});
 	return res1;
 }
@@ -625,13 +633,16 @@ function buildList(router, columns, options) {
 		}
 		if (item.search) {
 			if (item.key || item.type == 'select') {
-				dropDownList.push(item);
 				html += '<li><label>'+item.title+'</label><select id="'+item.field+'" name="'+item.field+'"></select></li>';
 			} else if (item.type == 'date') {
 				
 			} else {
 				html += '<li><label>'+item.title+'</label><input id="'+item.field+'" name="'+item.field+'" type="text"/></li>';
 			}
+		}
+		
+		if (item.key || item.type == 'select') {
+			dropDownList.push(item);
 		}
 		
 		
@@ -641,7 +652,17 @@ function buildList(router, columns, options) {
 	
 	for (var i = 0, len = dropDownList.length; i < len; i++) {
 		var item = dropDownList[i];
-		if (item.key) {
+		if (item.data) {
+			var data = item.data;
+			$('#' + item.field).renderDropdown2(data);
+			(function(d){
+				item.formatter = function(v) {
+					return d[v] || d[+v];
+				};
+			})(data);
+			
+		}
+		else if (item.key) {
 			$('#' + item.field).renderDropdown(Dict.getName(item.key));
 		} else if (item.url) {
 			var data = $('#' + item.field).renderDropdown($.extend({
@@ -657,9 +678,11 @@ function buildList(router, columns, options) {
 				dataDict[data[j][item.keyName]] = data[j][item.valueName];
 			}
 			
-			item.formatter = function(v) {
-				return dataDict[v];
-			};
+			item.formatter = (function(d) {
+				return function(v) {
+					return d[v];
+				};
+			})(dataDict);
 		}
 	}
 	
@@ -677,7 +700,7 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
-		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm?code="+selRecords[0].code + urlParamsStr;
+		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm?code="+(selRecords[0].code || selRecords[0].id) + urlParamsStr;
 	});
 	
 	$('#deleteBtn').click(function() {
@@ -696,8 +719,6 @@ function buildList(router, columns, options) {
 			if (res.success) {
 				alert('操作成功');
 				$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
-			} else {
-				alert(res.msg);
 			}
 		});
 	});
@@ -708,7 +729,7 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
-		location.href = $("#basePath").val() + (options.pageRouter || router) + "_detail.htm?code=" + selRecords[0].code + urlParamsStr;
+		location.href = $("#basePath").val() + (options.pageRouter || router) + "_detail.htm?v=1&code=" + (selRecords[0].code || selRecords[0].id) + urlParamsStr;
 	});
 	
 	$('#checkBtn').click(function() {
@@ -717,15 +738,20 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
-		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_check.htm?code="+selRecords[0].code + urlParamsStr;
+		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_check.htm?code="+ (selRecords[0].code || selRecords[0].id) + urlParamsStr;
 	});
+	
+	var singleSelect = true;
+	if ('singleSelect' in options) {
+		singleSelect = options['singleSelect'];
+	}
 
 	$('#tableList').bootstrapTable({
 		method : "get",
 		url : $("#basePath").val() + router + '/page',
 		striped : true,
 		clickToSelect : true,
-		singleSelect : true,
+		singleSelect : singleSelect,
 		queryParams : function(params) {
 			return $.extend({
 				start : params.offset / params.limit + 1,
@@ -750,7 +776,9 @@ function buildList(router, columns, options) {
 }
 
 function selectImage(file,name){
-	file.blur();
+	setTimeout(function() {
+		$(file).valid();
+	}, 10);
 	if(!file.files || !file.files[0]){
 		name.src = '';
 		return;
@@ -764,6 +792,7 @@ function buildDetail(router, fields, code, options) {
 	$('#page-title').html(title);
 	var html = '<input type="hidden" id="code" name="code" class="control-def" />';
 	var dropDownList = [], rules = {}, textareaList = [];
+	var dateTimeList = [];
 	for (var i = 0, len = fields.length; i < len; i++) {
 		var item = fields[i];
 		rules[item.field] = {};
@@ -810,12 +839,18 @@ function buildDetail(router, fields, code, options) {
 			html += '<li type="'+(item.amount ? 'amount' : '')+'" style="'+(item.hidden ? 'display: none' : '')+'"><label>'+(item.title ? ('<b>'+ ((item.required && '*') || '') +'</b>'+item.title+':') : '')+'</label>';
 			if (item.type == 'hidden') {
 				html = '<input type="hidden" id="'+item.field+'" name="'+item.field+'"/>' + html;
+			} else if (item.type == 'radio') {
+				for (var k = 0, len1 = item.items.length; k < len1; k++) {
+					var rd = item.items[k];
+					html += '<input type="radio" id="radio'+k+'" name="'+item.field+'" value="'+rd.key+'"><label title="'+(rd.value || '')+'" for="radio'+k+'" class="radio-text"><i class="zmdi '+(rd.icon || '')+' zmdi-hc-5x"></i></label>';
+				}
+				html += '</li>';
 			} else if (item.type == 'select') {
 				dropDownList.push(item);
 				html += '<select id="'+item.field+'" name="'+item.field+'" class="control-def"></select></li>';
 			} else if (item.type == 'img') {
 				html += '<div class="btn-file"><span>选择图片</span>' +
-			    	'<input type="file" id="'+item.field+'Img" name="'+item.field+'Img" onchange="selectImage(this,'+item.field+');" />' +
+			    	'<input type="file" tabindex="1" id="'+item.field+'Img" name="'+item.field+'Img" onchange="selectImage(this,'+item.field+');" />' +
 			    	'</div><img src="" id="'+item.field+'" /></li>';
 			} else if (item.type == 'textarea') {
 				textareaList.push({field: item.field});
@@ -830,6 +865,9 @@ function buildDetail(router, fields, code, options) {
 					rules.area = {required: true};
 				}
 				
+			} else if (item.type == 'datetime') {
+				dateTimeList.push(item);
+				html += '<input id="'+item.field+'" name="'+item.field+'" class="lay-input"/></li>';
 			} else {
 				html += '<input id="'+item.field+'" name="'+item.field+'" class="control-def" '+(item.placeholder ? ('placeholder="'+item.placeholder+'"') : '')+'/></li>';
 			}
@@ -881,6 +919,12 @@ function buildDetail(router, fields, code, options) {
 					data['area'] = city;
 				} 
 			}
+			for (var i = 0, len = fields.length; i < len; i++) {
+				var item = fields[i];
+				if (item.equal && (!$('#' + item.field).is(':hidden') || !$('#' + item.field + 'Img').is(':hidden'))) {
+					data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
+				}
+			}
 			var url = $("#basePath").val()+ router + "/" + (code ? 'edit' : 'add');
 			ajaxPost(url, data).then(function(res) {
 				if (res.success) {
@@ -894,7 +938,10 @@ function buildDetail(router, fields, code, options) {
 	
 	for (var i = 0, len = dropDownList.length; i < len; i++) {
 		var item = dropDownList[i];
-		if (item.key) {
+		if (item.data) {
+			$('#' + item.field).renderDropdown2(item.data);
+		}
+		else if (item.key) {
 			$('#' + item.field).renderDropdown(Dict.getName(item.key));
 		} else if (item.url) {
 			$('#' + item.field).renderDropdown($.extend({
@@ -903,11 +950,27 @@ function buildDetail(router, fields, code, options) {
 				valueName: item.valueName
 			}, (item.defaultOption ? {defaultOption: '<option value="0">'+item.defaultOption+'</option>'} : {})));
 		}
+		if (item.onChange) {
+			(function(i) {
+				$('#' + i.field).on('change', function(e) {
+					i.onChange(this.value);
+				});
+			})(item);
+			
+		}
 	}
 	
 	for (var i = 0, len = textareaList.length; i < len; i++) {
 		var item = textareaList[i];
 		UE.getEditor(item.field);
+	}
+	
+	for (var i = 0, len = dateTimeList.length; i < len; i++) {
+		var item = dateTimeList[i];
+		laydate({
+			elem: '#' + item.field,
+			min: item.minDate ? item.minDate : ''
+		});
 	}
 	
 	$("#city-group").citySelect && $("#city-group").citySelect({
@@ -926,7 +989,7 @@ function buildDetail(router, fields, code, options) {
 	if (!code) {
 		for (var i = 0, len = fields.length; i < len; i++) {
 			var item = fields[i];
-			if ('value' in item) {
+			if ('value' in item && !item.value.call) {
 				$('#' + item.field).val(item.value);
 			}
 			
@@ -940,29 +1003,82 @@ function buildDetail(router, fields, code, options) {
 		}, function(res) {
 			if (res.success) {
 				var data = res.data;
-				$('#code').val(data.code);
+				$('#code').val(data.code || data.id);
 				for (var i = 0, len = fields.length; i < len; i++) {
 					var item = fields[i];
 					var value = item.value;
 					if (item.readonly) {
-						if (item.type == 'select' && !item.url) {
-							$('#' + item.field).html(Dict.getName(item.key, data[item.field]));
+						if (item.type == 'select' && item.data) {
+							var realValue = data[item.field];
+							if (item.value) {
+								if (item.value.call) {
+									realValue = item.value(data);
+								} else {
+									realValue = item.value;
+								}
+							}
+							$('#' + item.field).html(item.data[realValue]);
+							
+							if (item.onChange) {
+								item.onChange(realValue);
+							}
 						}
-						else if (item.type == 'select' && item.url) {
+						else if (item.type == 'select' && !item.url) {
+							var realValue = data[item.field];
+							if (item.value) {
+								if (item.value.call) {
+									realValue = item.value(data);
+								} else {
+									realValue = item.value;
+								}
+							}
+							$('#' + item.field).html(Dict.getName(item.key, realValue));
+							
+							if (item.onChange) {
+								item.onChange(realValue);
+							}
+						} else if (item.type == 'radio') {
+							var selectOne = '';
+							for (var k = 0, len1 = item.items.length; k < len1; k++) {
+								if (item.items[k].key == data[item.field]) {
+									selectOne = item.items[k];
+									break;
+								}
+							}
+							$('#' + item.field).html('<div class="zmdi '+selectOne.icon+' zmdi-hc-5x" title="'+selectOne.value+'"></div>');
+						} else if (item.type == 'select' && item.url) {
 							var params = {};
-							params[item.keyName] = data[item.field];
-							(function(i) {
-								ajaxGet(i.url, params).then(function(res) {
-									var data = res.data.list[0] || res.data;
-									$('#' + i.field).html(data[i.valueName] || i.defaultOption);
-								});
-							})(item);
+							var realValue = data[item['[value]']] || data[item.field] || '';
+							params[item.keyName] = realValue;
+							if (!realValue) {
+								$('#' + item.field).html('-');
+							} else if (realValue == 0) {
+								$('#' + item.field).html(item.defaultOption);
+							} else {
+								(function(i) {
+									ajaxGet(i.url, params).then(function(res) {
+										var data = (res.data && res.data.list && res.data.list[0]) || res.data[0] || res.data;
+										$('#' + i.field).html(data[i.valueName] || i.defaultOption);
+									});
+								})(item);
+							}
+							
 							
 						} else if (item.type == 'img') {
-							$('#' + item.field).html(data[item.field] ? '<img src="'+data[item.field]+'" style="max-width: 300px;"></img>' : '-');
+							var realValue = data[item['[value]']] || data[item.field] || '';
+							if ($.isArray(realValue)) {
+								var imgHtml = '';
+								realValue.forEach(function(img) {
+									imgHtml += '<img src="'+img+'" style="max-width: 300px;"/>';
+								});
+								$('#' + item.field).html(imgHtml);
+							} else {
+								$('#' + item.field).html(realValue.indexOf('http://') > -1 ? '<img src="'+realValue+'" style="max-width: 300px;"></img>' : '-');
+							}
+							
 						} else {
 							if (item.field in data) {
-								$('#' + item.field).html((item.amount ? moneyFormat(data[item.field]) : data[item.field]) || '-');
+								$('#' + item.field).html((item.amount ? moneyFormat(data[item.field]) : data[item.field]));
 							} else {
 								$('#' + item.field).html('-');
 							}
@@ -972,11 +1088,24 @@ function buildDetail(router, fields, code, options) {
 							$('#' + item.field).html(item.formatter(data[item.field], data));
 						}
 						if (item['[value]']) {
-							$('#' + item.field).html(item.amount ? moneyFormat(data[item['[value]']]) : data[item['[value]']]);
+							if (item.type == 'img') {
+								var realValue = data[item['[value]']] || data[item.field] || '';
+								if (realValue.indexOf('http://') > -1) {
+									$('#' + item.field).attr('src', realValue);
+								}
+							} else {
+								$('#' + item.field).html(item.amount ? moneyFormat(data[item['[value]']]) : data[item['[value]']]);
+							}
+							
 						}
 					} else {
 						if (item.type == 'img') {
-							$('#' + item.field).attr('src', data[item.field]);
+							var realValue = data[item['[value]']] || data[item.field] || '';
+							if (realValue.indexOf('http://') > -1) {
+								$('#' + item.field).attr('src', realValue);
+							}
+						} else if (item.type == 'radio') {
+							$('input[name='+item.field+'][value='+data[item.field]+']').prop('checked', true);
 						} else if (item.type == 'textarea') {
 							(function(f) {
 								UE.getEditor(f).ready(function() {
@@ -1000,11 +1129,28 @@ function buildDetail(router, fields, code, options) {
 					}
 					
 					if ('value' in item) {
-						$('#' + item.field).val(item.amount ? moneyFormat(item.value): item.value);
+						if (item.value.call) {
+							$('#' + item.field).val(item.value(data));
+						} else {
+							$('#' + item.field).val(item.amount ? moneyFormat(item.value): item.value);
+						}
+						
 					}
 					
 					if (item['[value]']) {
-						$('#' + item.field).val(item.amount ? moneyFormat(data[item['[value]']]) : data[item['[value]']]);
+						if (item.type == 'img') {
+							var realValue = data[item['[value]']] || data[item.field] || '';
+							if (realValue.indexOf('http://') > -1) {
+								$('#' + item.field).attr('src', realValue);
+							}
+						} else {
+							$('#' + item.field).val(item.amount ? moneyFormat(data[item['[value]']]) : data[item['[value]']]);
+						}
+						
+					}
+					
+					if (item.type == 'select') {
+						$('#' + item.field).trigger('change');
 					}
 					
 				}
@@ -1061,4 +1207,20 @@ function buildDetailView(router, fields, code) {
 	$('#backBtn').click(function() {
 		goBack();
 	});
+}
+
+$(document).ajaxStart(function() {
+	$.blockUI({
+		overlayCSS: {backgroundColor: '#fff', opacity: 0.5},
+		message: null
+	});
+}).ajaxStop($.unblockUI);
+
+function text3dot(text, count) {
+	if (text.length <= count) {
+		return text;
+	} else {
+		return text.slice(0, 10) + '...';
+	}
+	
 }

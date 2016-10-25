@@ -22,7 +22,7 @@ $(function(){
 		search: true,
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
-		keyName: 'level',
+		keyName: 'code',
 		valueName: 'level',
 		defaultOption: 'All'
     }, {

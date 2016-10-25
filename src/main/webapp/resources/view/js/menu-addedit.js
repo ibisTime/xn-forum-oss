@@ -1,116 +1,92 @@
 $(function() {
-	$('#btn-icon').append($('.iconctn'));
-	$('#btn-icon').click(function() {
-		$('.iconctn').show();
-	});
-	$('.iconctn li').click(function(e) {
-		$('.iconctn').hide();
-		e.stopPropagation();
-		$('#icon1').attr('class',($(this).attr('class')));
-		$('#img1').attr('src', '');
-	});
-	$('#btn-icon').on('blur', function() {
-		$('.iconctn').hide();
-	});
-	var global = !+getQueryString('b') ? 1 : 0;
-	var params = '';
-	if (global) {
-		params = '?parentCode=0&isGlobal=1';
-	} else {
-		var cityId;
-		if (!global) {
-			cityId = getCityId(getUserId()) || '0';
-		}
-		params = '?parentCode=0&isDqNavigate=1&siteCode=' + cityId;
-	}
-	$('#type').renderDropdown(Dict.getName('view_type'));
-	$('#status').renderDropdown(Dict.getName('active_status'));
-	$('#parentCode').renderDropdown({
-		url: $("#basePath").val() + '/view/list' + params,
-		keyName: 'code',
-		valueName: 'name'
-	});
+	
 	var code = getQueryString('code');
-	if (code) {
-		doGetAjax($("#basePath").val()+"/view/detail", {
-			code: code
-		}, function(res) {
-			if (res.success) {
-				var data = res.data;
-				$('#code').val(data.code);
-				$('#name').val(data.name);
-				$('#parentCode').val(data.parentCode);
-				$('#status').val(data.status);
-				$('#type').val(data.type);
-				$('#orderNo').val(data.orderNo);
-				$('#url').val(data.url);
-				$('#img1').attr('src', data.pic);
+	var isBranch = !!getQueryString('b');
+	var router = '/view';
+	
+	var fields = [{
+		field: 'companyCode',
+		type: 'hidden',
+		value: isBranch ? getCityId(getUserId) : '0'
+	}, {
+		title: '名字',
+		field: 'name',
+		required: true,
+		maxlength: 30
+	}, {
+		title: '顺序',
+		field: 'orderNo',
+		required: true,
+		number: true,
+		maxlength: 10
+	}, {
+		title: 'url类型',
+		field: 'urlKind',
+		required: true,
+		type: 'select',
+		data: {'1': '内部', '2': '外部'},
+		onChange: function(r) {
+			if (r == 1) {
+				$('#url1').parent().show();
+				$('#url').parent().hide();
+			} else if (r == 2) {
+				$('#url1').parent().hide();
+				$('#url').parent().show();
+			} else {
+				$('#url1').parent().hide();
+				$('#url').parent().hide();
 			}
-		});
-	}
-	
-	//提交
-	$('#subBtn').click(function() {
-		if ($('#jsForm').valid()) {
-			if (!$('#img1').attr('src')) {
-				alert('请上传图片！');
-				return;
-			}
-			var data = {};
-			var t = $('#jsForm').serializeArray();
-			$.each(t, function() {
-				data[this.name] = this.value;
-			});
-			data['pic'] = $('#img1').attr('src');
-			data['parentCode'] = data['parentCode'] || 0;
-			data['isGlobal'] = global;
-			data['siteCode'] = cityId || '';
-			var url = $("#basePath").val()+"/view/" + (code ? 'edit' : 'add');
-			ajaxPost(url, data).then(function(res) {
-				if (res.success) {
-					alert("操作成功");
-					goBack();
-				}
-			});
-		}
-		
-	});
-	
-	//返回
-	$('#backBtn').click(function() {
-		goBack();
-	});
-	
-	
-	$("#jsForm").validate({
-		rules: {
-			name: {
-				required: true,
-				maxlength: 30
-			},
-			status: {
-				required: true
-			},
-			type: {
-				required: true
-			},
-			orderNo: {
-				required: true,
-				maxlength: 10
-			},
-			url: {
-				required: true,
-				maxlength: 100
+			$('#url1').val('');
+			$('#url').val('');
+		},
+		value: function(r) {
+			if (r.url.indexOf('page:') == -1) {
+				return '2';
+			} else {
+				return '1';
 			}
 		}
-	});
+	}, {
+		title: '内部页',
+		field: 'url1',
+		required: true,
+		type: 'select',
+		data: {'page:headline': '头条页', 
+			'page:forum': '有料页',
+			'page:xiaomi': '客服页',
+			'page:custom': '自定义页',
+			'page:mine': '个人中心页',
+			'page:mall': '商城页',
+			'page:signin': '签到'},
+		onChange: function(r) {
+			$('#url').val(r);
+		},
+		value: function(r) {
+			if (r.url.indexOf('page:') == -1) {
+				return '';
+			} else {
+				return r.url;
+			}
+		}
+	}, {
+		title: 'url',
+		field: 'url',
+		required: true,
+		maxlength: 200
+	}, {
+		title: '图片',
+		field: 'pic',
+		type: 'img',
+		required: true
+	}, {
+		title: '属于',
+		field: 'belong',
+		required: true,
+		type: 'select',
+		key: 'view_belong',
+		hidden: isBranch
+	}];
+	
+	buildDetail(router, fields, code);
 	
 });
-
-function selectImage(file,name){
-	if(!file.files || !file.files[0]){
-		return;
-	}
-	zipImg(file.files[0], document.getElementById(name));
-	$('#icon1').attr('class', '');
-}

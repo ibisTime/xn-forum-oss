@@ -5,10 +5,6 @@ $(function(){
 	
 	var isGlobal = !getQueryString('b');
 	
-	if (!isGlobal) {
-		router = '/customer/branch'
-	}
-	
 	var columns = [{
 		field : '',
 		title : '',
@@ -21,24 +17,28 @@ $(function(){
 		field : 'mobile',
 		title : '手机号'
     },{
+		field : 'email',
+		title : '邮箱'
+    },{
     	field : 'status',
 		title : '状态',
 		type: 'select',
 		key: 'user_status',
+		search: true,
 		formatter: Dict.getNameForList('user_status')
     },{
 		field : 'level',
 		title : '用户组',
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=1000000',
-		keyName: 'level',
+		keyName: 'code',
 		valueName: 'level',
 		search: true
 	},{
-		field : '',
-		title : '发帖数'
+		field: '',
+		title: '归属'
 	},{
-		field : '',
+		field : 'ljAmount',
 		title : '积分'
 	},{
 		field : 'remark',
@@ -48,7 +48,7 @@ $(function(){
 	var options = {pageRouter: 'user/customer'};
 	if (!isGlobal) {
 		options.searchParams = {
-			'ossUserId': getUserId()
+			'companyCode': getCityId(getUserId())
 		};
 	}
 	buildList(router, columns, options);

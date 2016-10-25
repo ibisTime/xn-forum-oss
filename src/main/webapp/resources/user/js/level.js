@@ -17,6 +17,9 @@ $(function(){
     	field : 'amountMax',
 		title : '积分上'
     },{
+    	field: 'isCheck',
+    	title: '是否审核'
+    },{
 		field : 'updater',
 		title : '最近修改人'
 	}, {

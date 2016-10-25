@@ -22,15 +22,11 @@ import com.xnjr.app.util.RegexUtils;
 public class BizConnecter {
     public static final String YES = "0";
     
-    public static final String MAIL_URL = PropertiesUtil.Config.MAIL_URL;
-
-    public static final String BASE_URL = PropertiesUtil.Config.BASE_URL;
+    public static final String MAIN_URL = PropertiesUtil.Config.MAIN_URL;
 
     public static final String USER_URL = PropertiesUtil.Config.USER_URL;
 
     public static final String ACCOUNT_URL = PropertiesUtil.Config.ACCOUNT_URL;
-
-    public static final String SMS_URL = PropertiesUtil.Config.SMS_URL;
 
     public static <T> T getBizData(String code, String json, Class<T> clazz) {
         String data = getBizData(code, json);
@@ -64,16 +60,12 @@ public class BizConnecter {
 
     public static String getPostUrl(String code) {
         String postUrl = null;
-        if (code.startsWith("809")) {
-            postUrl = BASE_URL;
-        } else if (code.startsWith("805") || code.startsWith("806")) {
+        if (code.startsWith("805") || code.startsWith("806") || code.startsWith("807")) {
             postUrl = USER_URL;
         } else if (code.startsWith("802")) {
             postUrl = ACCOUNT_URL;
         } else if (code.startsWith("610")) {
-        	postUrl = MAIL_URL;
-        } else if (code.startsWith("799")) {
-            postUrl = SMS_URL;
+        	postUrl = MAIN_URL;
         }
         return postUrl;
     }

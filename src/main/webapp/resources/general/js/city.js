@@ -19,7 +19,11 @@ $(function() {
 		key: 'city_location'
     },{
     	field : 'userId',
-		title : '负责人'
+		title : '负责人',
+		type: 'select',
+		url: $('#basePath').val() + '/user/list',
+		keyName: 'userId',
+		valueName: 'loginName'
     },{
     	field : 'isDefault',
 		title : '默认',

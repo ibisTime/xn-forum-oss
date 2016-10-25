@@ -27,7 +27,7 @@ public class ViewController extends BaseController {
     public Object viewAdd(@RequestBody Map map) {
   		map.put("userId", this.getSessionUser().getUserId());
   		map.put("pic", UploadUtil.uploadPicture((String) map.get("pic")));
-  		return BizConnecter.getBizData("610020", JsonUtils.mapToJson(map),
+  		return BizConnecter.getBizData("806040", JsonUtils.mapToJson(map),
               Object.class);
 	}
     
@@ -35,9 +35,8 @@ public class ViewController extends BaseController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Object viewEdit(@RequestBody Map map) {
-  		map.put("userId", this.getSessionUser().getUserId());
   		map.put("pic", UploadUtil.uploadPicture((String) map.get("pic")));
-  		return BizConnecter.getBizData("610022", JsonUtils.mapToJson(map),
+  		return BizConnecter.getBizData("806043", JsonUtils.mapToJson(map),
               Object.class);
 	}
 	
@@ -46,7 +45,7 @@ public class ViewController extends BaseController {
     @ResponseBody
     public Object viewPage(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610030", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("806050", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -55,7 +54,7 @@ public class ViewController extends BaseController {
     @ResponseBody
     public Object viewList(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610031", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("806052", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
     
@@ -64,7 +63,7 @@ public class ViewController extends BaseController {
     @ResponseBody
     public Object viewDetail(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("610032", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("806054", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
 }

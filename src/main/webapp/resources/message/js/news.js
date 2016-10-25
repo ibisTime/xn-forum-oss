@@ -18,8 +18,8 @@ $(function(){
 		search: true,
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
-		keyName: 'level',
-		valueName: 'level',
+		keyName: 'code',
+		valueName: 'name',
 		defaultOption: 'All'
     }, {
     	field : 'status',

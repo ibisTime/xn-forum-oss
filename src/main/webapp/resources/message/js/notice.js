@@ -13,13 +13,30 @@ $(function(){
 		title : '标题',
 		search: true
 	},{
+    	field : 'toCompany',
+		title : '作用地区',
+		search: true,
+		type: 'select',
+		url: $('#basePath').val() + '/general/city/page?start=1&limit=100000',
+		keyName: 'code',
+		valueName: 'name',
+		defaultOption: 'All'
+    }, {
     	field : 'toLevel',
 		title : '作用等级',
 		search: true,
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
-		keyName: 'level',
-		valueName: 'level',
+		keyName: 'code',
+		valueName: 'name',
+		defaultOption: 'All'
+    }, {
+    	field : 'toUser',
+		title : '作用人',
+		type: 'select',
+		url: $('#basePath').val() + '/customer/page?start=1&limit=100000',
+		keyName: 'userId',
+		valueName: 'loginName',
 		defaultOption: 'All'
     }, {
     	field : 'status',
@@ -47,6 +64,11 @@ $(function(){
 		options.urlParams = {
 			'b': '1'
 		}
+	} else {
+		options.searchParams = {
+			'companyCode': '0',
+			type: 1
+		};
 	}
 	buildList(router, columns, options);
 	
