@@ -87,6 +87,7 @@ $(function() {
 		required: true,
 		type: 'select',
 		key: 'view_belong',
+		data: {'1': '全局', '2': '地方默认'},
 		readonly: true
 	}];
 	

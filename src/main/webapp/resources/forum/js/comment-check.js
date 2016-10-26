@@ -5,9 +5,15 @@ $(function() {
 	
 	var fields = [{
 		title: '针对',
-		field: '',
+		field: 'parentCode',
 		readonly: true,
-		value: '1'
+		formatter: function(v, r) {
+			if (r.post) {
+				return '帖子：' + text3dot(r.post.title || r.post.content, 10);
+			} else if (r.parentComment) {
+				return '评论：' + text3dot(r.post.content, 10);
+			}
+		}
 	}, {
 		title: '内容',
 		field: 'content',
@@ -41,7 +47,8 @@ $(function() {
 			handler: function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
-					data.status = 1;
+					data.approveResult = 1;
+					data.type = 2;
 					var url = $("#basePath").val()+ router + "/check";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {
@@ -54,24 +61,10 @@ $(function() {
 		}, {
 			title: '删除',
 			handler: function() {
-				 $("#approveNote").rules("add",{required:false}); 
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
-					var url = $("#basePath").val()+ router + "/delete";
-					ajaxPost(url, data).then(function(res) {
-						if (res.success) {
-							alert("操作成功");
-							goBack();
-						}
-					});
-				}
-			}
-		}, {
-			title: '忽略',
-			handler: function() {
-				if ($('#jsForm').valid()) {
-					var data = $('#jsForm').serializeObject();
-					data.status = 0;
+					data.approveResult = 0;
+					data.type = 2;
 					var url = $("#basePath").val()+ router + "/check";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {

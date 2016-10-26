@@ -11,10 +11,10 @@ $(function() {
 		field: 'content',
 		readonly: true
 	}, {
-		field : 'toSite',
+		field : 'toCompany',
 		title : '作用地区',
 		type: 'select',
-		url: $('#basePath').val() + '/general/city/page?start=1&limit=100000',
+		url: $('#basePath').val() + '/general/city/detail',
 		keyName: 'code',
 		valueName: 'name',
 		defaultOption: 'All',
@@ -32,7 +32,7 @@ $(function() {
 		field : 'toUser',
 		title : '作用人',
 		type: 'select',
-		url: $('#basePath').val() + '/customer/page?start=1&limit=100000',
+		url: $('#basePath').val() + '/customer/detail?companyCode='+getCityId(getUserId()),
 		keyName: 'userId',
 		valueName: 'loginName',
 		defaultOption: 'All',

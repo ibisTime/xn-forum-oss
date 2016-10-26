@@ -22,7 +22,8 @@ $(function(){
 		title : '状态',
 		formatter: Dict.getNameForList('post_status'),
 		search: true,
-		key: 'post_status'
+		key: 'post_status',
+		data: {'C1': '不信任待审批', 'C2': '被举报待审批', 'F': '被过滤'}
     }, {
     	field : 'publisher',
 		title : '发帖人'
@@ -36,7 +37,8 @@ $(function(){
 	}];
 	buildList(router, columns, {
 		searchParams: {
-			siteCode: getCityId(getUserId())
+			siteCode: getCityId(getUserId()),
+			status: 'CC'
 		},
 		singleSelect: false
 	});
@@ -74,6 +76,7 @@ $(function(){
 			ajaxPost(url, data).then(function(res) {
 				if (res.success) {
 					alert("操作成功");
+					$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
 					d.close();
 				}
 			});
@@ -100,6 +103,7 @@ $(function(){
 			ajaxPost(url, data).then(function(res) {
 				if (res.success) {
 					alert("操作成功");
+					$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
 					d.close();
 				}
 			});

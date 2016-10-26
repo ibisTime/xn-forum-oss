@@ -15,7 +15,7 @@ $(function() {
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=100000',
 		keyName: 'code',
-		valueName: 'level',
+		valueName: 'name',
 		defaultOption: 'All',
 		defaultValue: '0',
 		required: true

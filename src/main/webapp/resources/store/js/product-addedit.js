@@ -2,6 +2,7 @@ $(function() {
 	
 	var code = getQueryString('code');
 	var router = '/store/product';
+	var isUpdown = getQueryString('action') == 'updown';
 	
 	var fields = [{
 		field: 'siteCode',
@@ -11,17 +12,20 @@ $(function() {
 		title: '名称',
 		field: 'name',
 		required: true,
-		maxlength: 30
+		maxlength: 30,
+		readonly: isUpdown
 	}, {
 		title: '广告图',
 		field: 'pic',
 		required: true,
-		type: 'img'
+		type: 'img',
+		readonly: isUpdown
 	}, {
 		title: '定价',
 		field: 'price',
 		required: true,
-		amount: true
+		amount: true,
+		hidden: !isUpdown,
 	}, {
 		title: '状态',
 		field: 'status',
@@ -29,20 +33,57 @@ $(function() {
 		type: 'select',
 		key: 'prod_status',
 		defaultValue: '0',
-		hidden: true
+		hidden: true,
+		readonly: isUpdown
+	}, {
+		title: '库存',
+		field: 'quantity',
+		required: true,
+		'Z+': true,
+		maxlength: 10,
+		readonly: isUpdown
 	}, {
 		title: '大类',
 		field: 'kind',
 		required: true,
 		type: 'select',
-		key: 'prod_kind'
+		key: 'prod_kind',
+		readonly: isUpdown
 	}, {
 		title: '简介',
 		field: 'description',
 		required: true,
-		type: 'textarea'
+		type: 'textarea',
+		readonly: isUpdown
 	}];
-	
-	buildDetail(router, fields, code);
+	var options = {};
+	if (isUpdown) {
+		$('.form-title').after('<div class="alert-warning">状态为未发布和已下架时为下架操作， 状态为上架中为下架操作</div>');
+		options.buttons = [{
+			title: '上下架',
+			handler: function() {
+				if ($('#jsForm').valid()) {
+					var data = $('#jsForm').serializeObject();
+					$('#jsForm').find('input[type=file]').parent().next().each(function(i, el) {
+						data[el.id] = $(el).attr('src');
+					});
+
+					var url = $("#basePath").val()+"/store/product/updown";
+					ajaxPost(url, data).then(function(res) {
+						if (res.success) {
+							alert("操作成功");
+							goBack();
+						}
+					});
+				}
+			}
+		}, {
+			title: '返回',
+			handler: function() {
+				goBack();
+			}
+		}];
+	}
+	buildDetail(router, fields, code, options);
 	
 });

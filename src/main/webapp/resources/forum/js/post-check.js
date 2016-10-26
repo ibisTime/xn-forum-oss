@@ -81,22 +81,6 @@ $(function() {
 		}, {
 			title: '删除',
 			handler: function() {
-				 $("#approveNote").rules("add",{required:false}); 
-				if ($('#jsForm').valid()) {
-					var data = $('#jsForm').serializeObject();
-					data.type = '1';
-					var url = $("#basePath").val()+ router + "/delete";
-					ajaxPost(url, data).then(function(res) {
-						if (res.success) {
-							alert("操作成功");
-							goBack();
-						}
-					});
-				}
-			}
-		}, {
-			title: '忽略',
-			handler: function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
 					data.approveResult = 0;

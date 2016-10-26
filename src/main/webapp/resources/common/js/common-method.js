@@ -537,7 +537,7 @@ $.fn.val = function(value) {
 	if ($(this).is('select')) {
 		$(this).trigger('chosen:updated');
 	}
-	return res;
+	return res || '';
 }
 
 $(document).on('click', 'input[type=reset]', function() {
@@ -700,6 +700,10 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
+		else if(selRecords.length >= 2){
+			alert("请选择一条记录");
+			return;
+		}
 		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_addedit.htm?code="+(selRecords[0].code || selRecords[0].id) + urlParamsStr;
 	});
 	
@@ -707,6 +711,11 @@ function buildList(router, columns, options) {
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
+			return;
+		}
+		
+		else if(selRecords.length >= 2){
+			alert("请选择一条记录");
 			return;
 		}
 		
@@ -729,6 +738,10 @@ function buildList(router, columns, options) {
 			alert("请选择记录");
 			return;
 		}
+		else if(selRecords.length >= 2){
+			alert("请选择一条记录");
+			return;
+		}
 		location.href = $("#basePath").val() + (options.pageRouter || router) + "_detail.htm?v=1&code=" + (selRecords[0].code || selRecords[0].id) + urlParamsStr;
 	});
 	
@@ -736,6 +749,10 @@ function buildList(router, columns, options) {
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
+			return;
+		}
+		else if(selRecords.length >= 2){
+			alert("请选择一条记录");
 			return;
 		}
 		window.location.href = $("#basePath").val()+ (options.pageRouter || router) + "_check.htm?code="+ (selRecords[0].code || selRecords[0].id) + urlParamsStr;

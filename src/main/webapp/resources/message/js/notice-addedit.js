@@ -34,7 +34,8 @@ $(function() {
 		keyName: 'code',
 		valueName: 'name',
 		defaultOption: 'All',
-		defaultValue: '0',
+		defaultValue: isGlobal ? '0' : getCityId(getUserId()),
+		hidden: !isGlobal,
 		required: true
 	}, {
 		field : 'toLevel',
@@ -50,7 +51,7 @@ $(function() {
 		field : 'toUser',
 		title : '作用人',
 		type: 'select',
-		url: $('#basePath').val() + '/customer/page?start=1&limit=100000',
+		url: $('#basePath').val() + '/customer/page?companyCode='+getCityId(getUserId())+'&start=1&limit=100000',
 		keyName: 'userId',
 		valueName: 'loginName',
 		defaultOption: 'All',

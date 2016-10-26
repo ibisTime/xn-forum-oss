@@ -89,7 +89,17 @@ public class ForumController extends BaseController {
     @RequestMapping(value = "/post/check", method = RequestMethod.POST)
     @ResponseBody
     public Object postCheck(@RequestBody Map map) {
-  		map.put("approver", this.getSessionUser().getUserId());
+  		map.put("approver", this.getSessionUser().getUserName());
+  		return BizConnecter.getBizData("610044", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 评论审核
+    @RequestMapping(value = "/comment/check", method = RequestMethod.POST)
+    @ResponseBody
+    public Object commentCheck(@RequestBody Map map) {
+  		map.put("approver", this.getSessionUser().getUserName());
+  		map.put("type", "2");
   		return BizConnecter.getBizData("610044", JsonUtils.mapToJson(map),
               Object.class);
 	}
@@ -98,6 +108,15 @@ public class ForumController extends BaseController {
     @RequestMapping(value = "/post/delete", method = RequestMethod.POST)
     @ResponseBody
     public Object postDelete(@RequestBody Map map) {
+    	map.put("userId", this.getSessionUser().getUserId());
+  		return BizConnecter.getBizData("610047", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 评论删除
+    @RequestMapping(value = "/comment/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Object commentDelete(@RequestBody Map map) {
     	map.put("userId", this.getSessionUser().getUserId());
   		return BizConnecter.getBizData("610047", JsonUtils.mapToJson(map),
               Object.class);
@@ -128,9 +147,20 @@ public class ForumController extends BaseController {
 	}
     
     // 帖子批量删除
-    @RequestMapping(value = "/post/all/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/post/multi/delete", method = RequestMethod.POST)
     @ResponseBody
     public Object postAllDelete(@RequestBody Map map) {
+    	map.put("type", "1");
+    	map.put("userId", this.getSessionUser().getUserId());
+  		return BizConnecter.getBizData("610048", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 评论批量删除
+    @RequestMapping(value = "/comment/multi/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Object commentAllDelete(@RequestBody Map map) {
+    	map.put("type", "2");
     	map.put("userId", this.getSessionUser().getUserId());
   		return BizConnecter.getBizData("610048", JsonUtils.mapToJson(map),
               Object.class);
@@ -140,6 +170,7 @@ public class ForumController extends BaseController {
     @RequestMapping(value = "/post/restore", method = RequestMethod.POST)
     @ResponseBody
     public Object postRestore(@RequestBody Map map) {
+    	map.put("type", "1");
   		return BizConnecter.getBizData("610046", JsonUtils.mapToJson(map),
               Object.class);
 	}
@@ -148,7 +179,18 @@ public class ForumController extends BaseController {
     @RequestMapping(value = "/post/multi/check", method = RequestMethod.POST)
     @ResponseBody
     public Object postMultiCheck(@RequestBody Map map) {
-    	map.put("approver", this.getSessionUser().getUserId());
+    	map.put("approver", this.getSessionUser().getUserName());
+    	map.put("type", "1");
+  		return BizConnecter.getBizData("610045", JsonUtils.mapToJson(map),
+              Object.class);
+	}
+    
+    // 评论批量审核
+    @RequestMapping(value = "/comment/multi/check", method = RequestMethod.POST)
+    @ResponseBody
+    public Object commentMultiCheck(@RequestBody Map map) {
+    	map.put("approver", this.getSessionUser().getUserName());
+    	map.put("type", "2");
   		return BizConnecter.getBizData("610045", JsonUtils.mapToJson(map),
               Object.class);
 	}

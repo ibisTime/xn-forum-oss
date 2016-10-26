@@ -22,6 +22,9 @@ $(function(){
     	title: '定价（积分）',
     	amount: true
     }, {
+    	field: 'quantity',
+    	title: '库存'
+    }, {
 		field : 'status',
 		title : '状态',
 		formatter: Dict.getNameForList('prod_status'),
@@ -36,16 +39,18 @@ $(function(){
 			alert("请选择记录");
 			return;
 		}
-    	var url = $("#basePath").val()+"/store/product/updown";
-    	var data = {code:selRecords[0].code};
-		ajaxPost(url, data).then(function(res) {
-			if (res.success) {
-				alert('操作成功');
-				$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
-			} else {
-				alert(res.msg);
-			}
-		});
+		window.location.href = $("#basePath").val()+ "/store/product_addedit.htm?action=updown&code="+ selRecords[0].code;
+		
+//    	var url = $("#basePath").val()+"/store/product/updown";
+//    	var data = {code:selRecords[0].code};
+//		ajaxPost(url, data).then(function(res) {
+//			if (res.success) {
+//				alert('操作成功');
+//				$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
+//			} else {
+//				alert(res.msg);
+//			}
+//		});
 	});
 })
 

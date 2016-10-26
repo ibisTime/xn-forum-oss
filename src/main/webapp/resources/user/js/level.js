@@ -7,7 +7,7 @@ $(function(){
 		title : '',
 		checkbox : true
 	},{
-		field : 'level',
+		field : 'name',
 		title : '名称',
 		search: true
 	},{
@@ -17,16 +17,12 @@ $(function(){
     	field : 'amountMax',
 		title : '积分上'
     },{
-    	field: 'isCheck',
-    	title: '是否审核'
+    	field: 'effect',
+    	title: '是否审核',
+    	formatter: Dict.getNameForList('true_false'),
+    	type: 'select',
+    	key: 'true_false'
     },{
-		field : 'updater',
-		title : '最近修改人'
-	}, {
-		field : 'updateDatetime',
-		title : '最近修改时间',
-		formatter: dateTimeFormat
-	}, {
 		field : 'remark',
 		title : '备注'
 	}];

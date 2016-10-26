@@ -36,7 +36,7 @@ public class ViewController extends BaseController {
     @ResponseBody
     public Object viewEdit(@RequestBody Map map) {
   		map.put("pic", UploadUtil.uploadPicture((String) map.get("pic")));
-  		return BizConnecter.getBizData("806043", JsonUtils.mapToJson(map),
+  		return BizConnecter.getBizData("806042", JsonUtils.mapToJson(map),
               Object.class);
 	}
 	
@@ -63,7 +63,7 @@ public class ViewController extends BaseController {
     @ResponseBody
     public Object viewDetail(@RequestParam Map<String,String> allRequestParams) {
     	//allRequestParams.put("userId", this.getSessionUser().getUserId());
-  	    return BizConnecter.getBizData("806054", JsonUtils.mapToJson(allRequestParams),
+  	    return BizConnecter.getBizData("806053", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
 }

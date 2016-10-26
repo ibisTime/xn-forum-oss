@@ -32,14 +32,15 @@ $(function(){
 		type: 'select',
 		url: $('#basePath').val() + '/user/level/page?start=1&limit=1000000',
 		keyName: 'code',
-		valueName: 'level',
+		valueName: 'name',
 		search: true
 	},{
-		field: '',
+		field: 'companyName',
 		title: '归属'
 	},{
 		field : 'ljAmount',
-		title : '积分'
+		title : '积分',
+		formatter: moneyFormat
 	},{
 		field : 'remark',
 		title : '备注'
@@ -52,5 +53,24 @@ $(function(){
 		};
 	}
 	buildList(router, columns, options);
+	
+	$('#lockBtn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections')
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		if(!confirm("确认锁定用户["+selRecords[0].loginName+"]?")){
+    		return false;
+    	}
+		var data = {"userId":selRecords[0].userId};
+		var url = $("#basePath").val()+"/user/drop";
+		doPostAjax(url, data, function(res) {
+			if (res.success) {
+				alert('操作成功');
+				$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
+			}
+		});
+	});
 })
 

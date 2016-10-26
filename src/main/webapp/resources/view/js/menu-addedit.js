@@ -5,6 +5,21 @@ $(function() {
 	var router = '/view';
 	
 	var fields = [{
+		field: 'type',
+		type: 'hidden'
+	}, {
+		field: 'isCompanyEdit',
+		type: 'hidden',
+		value: isBranch ? '1' : '0'
+	}, {
+		field: 'status',
+		type: 'hidden',
+		value: '1'
+	}, {
+		field: 'location',
+		type: 'hidden',
+		value: '0'
+	}, {
 		field: 'companyCode',
 		type: 'hidden',
 		value: isBranch ? getCityId(getUserId) : '0'
@@ -84,6 +99,7 @@ $(function() {
 		required: true,
 		type: 'select',
 		key: 'view_belong',
+		data: {'1': '全局', '2': '地方默认'},
 		hidden: isBranch
 	}];
 	

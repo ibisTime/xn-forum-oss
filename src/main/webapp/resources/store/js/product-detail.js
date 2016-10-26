@@ -17,6 +17,10 @@ $(function() {
 		readonly: true,
 		amount: true
 	}, {
+		title: '库存',
+		field: 'quantity',
+		readonly: true
+	}, {
 		title: '状态',
 		field: 'status',
 		required: true,

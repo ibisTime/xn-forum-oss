@@ -22,7 +22,8 @@ $(function(){
 		title : '状态',
 		formatter: Dict.getNameForList('post_status'),
 		search: true,
-		key: 'post_status'
+		key: 'post_status',
+		data: {'B': '已发布', 'D': '审批通过'}
     }, {
     	field : 'publisher',
 		title : '发帖人'
@@ -36,7 +37,8 @@ $(function(){
 	}];
 	buildList(router, columns, {
 		searchParams: {
-			siteCode: getCityId(getUserId())
+			siteCode: getCityId(getUserId()),
+			status: 'BD'
 		},
 		singleSelect: false
 	});
@@ -96,12 +98,12 @@ $(function(){
 		if(!confirm("确认是否删除该记录？")){
     		return false;
     	}
-    	var url = $("#basePath").val()+ router + '/all/delete';
+    	var url = $("#basePath").val()+ router + '/multi/check';
     	var codeList = [];
     	selRecords.forEach(function(item) {
     		codeList.push(item.code);
     	});
-    	var data = {codeList: codeList, type: '1'};
+    	var data = {codeList: codeList, type: '1', approveResult: '0', approveNote: '删除'};
 		ajaxPost(url, data).then(function(res) {
 			if (res.success) {
 				alert('操作成功');

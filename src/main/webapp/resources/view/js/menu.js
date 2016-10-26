@@ -32,7 +32,8 @@ $(function() {
     	field : 'belong',
 		title : '属于',
 		formatter: Dict.getNameForList('view_belong'),
-		key: 'view_belong'
+		key: 'view_belong',
+		data: {'1': '全局', '2': '地方默认'}
 	}];
 	
 	var searchParams = {isDfNavigate: 0,companyCode: 0};

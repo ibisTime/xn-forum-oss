@@ -23,7 +23,8 @@ $(function(){
 	}];
 	buildList(router, columns, {
 		searchParams: {
-			siteCode: getCityId(getUserId())
+			siteCode: getCityId(getUserId()),
+			status: 'E'
 		}
 	});
 	
@@ -31,6 +32,10 @@ $(function(){
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
+			return;
+		}
+		else if(selRecords.length >= 2){
+			alert("请选择一条记录");
 			return;
 		}
 		
@@ -54,12 +59,12 @@ $(function(){
 		if(!confirm("确认是否删除该记录？")){
     		return false;
     	}
-    	var url = $("#basePath").val()+ router + '/all/delete';
+    	var url = $("#basePath").val()+ router + '/multi/delete';
     	var codeList = [];
     	selRecords.forEach(function(item) {
     		codeList.push(item.code);
     	});
-    	var data = {codeList: codeList, type: '1'};
+    	var data = {codeList: codeList};
 		ajaxPost(url, data).then(function(res) {
 			if (res.success) {
 				alert('操作成功');

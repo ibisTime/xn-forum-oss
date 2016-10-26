@@ -14,7 +14,7 @@ $(function(){
 		title: '提货人',
 		search: true
 	}, {
-		field: 'productName',
+		field: 'productCode',
 		title: '商品'
 	}, {
 		field : 'status',
