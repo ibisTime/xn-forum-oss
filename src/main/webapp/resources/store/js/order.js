@@ -10,11 +10,7 @@ $(function(){
 		field : 'code',
 		title : '订单编号'
 	}, {
-		field: 'taker',
-		title: '提货人',
-		search: true
-	}, {
-		field: 'productCode',
+		field: 'productName',
 		title: '商品'
 	}, {
 		field : 'status',
@@ -31,7 +27,11 @@ $(function(){
     	field: 'remark',
     	title: '备注'
     }];
-	buildList(router, columns);
+	buildList(router, columns, {
+		searchParams: {
+			siteCode: getCityId(getUserId())
+		}
+	});
 	
 	$('#actionBtn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections')

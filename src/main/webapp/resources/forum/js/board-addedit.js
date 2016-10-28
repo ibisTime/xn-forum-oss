@@ -9,6 +9,10 @@ $(function() {
 		type: 'hidden',
 		value: cityId
 	}, {
+		hidden: true,
+		field: 'location',
+		value: '1'
+	}, {
 		title: '大类',
 		field: 'kind',
 		required: true,
@@ -26,12 +30,6 @@ $(function() {
 		type: 'select',
 		key: 'active_status'
 	}, {
-		title: '地位',
-		field: 'location',
-		required: true,
-		type: 'select',
-		key: 'plate_location'
-	}, {
 		title: '顺序',
 		field: 'orderNo',
 		required: true,
@@ -42,7 +40,7 @@ $(function() {
 		field: 'userId',
 		required: true,
 		type: 'select',
-		url: $("#basePath").val() + '/customer/list',
+		url: $("#basePath").val() + '/customer/list?companyCode=' + cityId,
 		keyName: 'userId',
 		valueName: 'loginName'
 	}, {
@@ -57,5 +55,4 @@ $(function() {
 	}];
 	
 	buildDetail(router, fields, code);
-	
 });

@@ -26,7 +26,7 @@ $(function() {
 		type: 'img'
 	}, {
 		title: '发帖人',
-		field: 'publisher',
+		field: 'loginName',
 		readonly: true
 	}, {
 		title: '发帖时间',

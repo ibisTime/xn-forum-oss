@@ -11,7 +11,7 @@ $(function(){
 		title : '标题',
 		search: true
 	}, {
-    	field : 'publisher',
+    	field : 'loginName',
 		title : '发帖人'
 	}, {
 		field: 'publishDatetime',

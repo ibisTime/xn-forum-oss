@@ -24,13 +24,6 @@ $(function() {
 		key: 'active_status',
 		readonly: true
 	}, {
-		title: '地位',
-		field: 'location',
-		required: true,
-		type: 'select',
-		key: 'plate_location',
-		readonly: true
-	}, {
 		title: '顺序',
 		field: 'orderNo',
 		required: true,

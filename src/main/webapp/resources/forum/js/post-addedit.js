@@ -9,7 +9,7 @@ $(function() {
 		title: '版块',
 		type: 'select',
 		'[value]': 'plateCode',
-		url: $('#basePath').val() + '/forum/board/list?siteCode=' + getCityId(getUserId()),
+		url: $('#basePath').val() + '/forum/board/detail',
 		keyName: 'code',
 		valueName: 'name',
 		readonly: true
@@ -28,7 +28,7 @@ $(function() {
 		type: 'img'
 	}, {
 		title: '发帖人',
-		field: 'publisher',
+		field: 'loginName',
 		readonly: true
 	}, {
 		title: '发帖时间',
@@ -41,6 +41,10 @@ $(function() {
 		readonly: true,
 		type: 'select',
 		key: 'post_status'
+	}, {
+		title: '备注',
+		field: 'remark',
+		readonly: true
 	}, {
 		title: '有效期',
 		field: 'endDatetime',
@@ -117,6 +121,10 @@ $(function() {
 			title: '保存',
 			handler: function() {
 				if ($('#jsForm').valid()) {
+					if ($('#plateCode').val() == $('#plateCode1').data('value')) {
+						alert('帖子已经在该版块了');
+						return;
+					}
 					var data = $('#jsForm').serializeObject();
 					var url = $("#basePath").val()+ router + "/change";
 					ajaxPost(url, data).then(function(res) {

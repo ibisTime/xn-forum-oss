@@ -31,7 +31,11 @@ $(function(){
 		search: true,
 		key: 'prod_status'
     }];
-	buildList(router, columns);
+	buildList(router, columns, {
+		searchParams: {
+			siteCode: getCityId(getUserId())
+		}
+	});
 	
 	$('#updownBtn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections')

@@ -128,6 +128,17 @@ public class UserAOImpl implements IUserAO {
         return BizConnecter.getBizData("805052", JsonUtils.object2Json(req),
             Object.class);
     }
+    
+    @Override
+    public Object unlockUser(String userId, String updater, String remark) {
+        XN805052Req req = new XN805052Req();
+        req.setUserId(userId);
+        req.setToStatus(EUserStatus.NORMAL.getCode());
+        req.setUpdater(updater);
+        req.setRemark(remark);
+        return BizConnecter.getBizData("805052", JsonUtils.object2Json(req),
+            Object.class);
+    }
 
     /** 
      * @see com.xnjr.app.security.ao.IUserAO#activeUser(java.lang.String, java.lang.String, java.lang.String)

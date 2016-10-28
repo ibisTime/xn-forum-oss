@@ -118,6 +118,8 @@ public interface IUserAO {
      * @history:
      */
     public Object cancelUser(String userId, String updater, String remark);
+    
+    public Object unlockUser(String userId, String updater, String remark);
 
     /**
      * 激活用户

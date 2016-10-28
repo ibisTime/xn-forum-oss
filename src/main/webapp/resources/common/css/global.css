@@ -82,7 +82,7 @@ textarea.error{background: none;margin: 0; width: 504px;}
 .form-body{padding:10px 18px;}
 #jsForm .form-body .bootstrap-table{margin-left: 100px;margin-bottom:17px;}
 .form-body .bootstrap-table{margin-bottom:17px;}
-.form-title{border-bottom:solid 1px #d0dee5; line-height:35px; position:relative; height:35px; margin-bottom:28px;clear:both;}
+.form-title{font-weight:bold;border-bottom:solid 1px #d0dee5; line-height:35px; position:relative; height:35px; margin-bottom:28px;clear:both;}
 .form-title span{font-weight:bold;font-size:14px; border-bottom:solid 3px #66c9f3;float:left; position:absolute; z-index:100; bottom:-1px; padding:0 3px; height:30px; line-height:30px;}
 .form-info{padding-left:23px;}
 .form-info li{margin-bottom:13px; clear:both;}
@@ -90,11 +90,11 @@ textarea.error{background: none;margin: 0; width: 504px;}
 .form-info li label{width:194px;line-height:34px; display:block; float:left;text-align:right;padding-right:15px;margin-bottom: 10px;}
 .form-info li i{color:#7f7f7f; padding-left:20px; font-style:normal;}
 .form-info li cite{display:block; padding-top:10px;}
-.form-info li .control-def{width:320px; height:32px; line-height:32px; border-top:solid 1px #ced9df; border-left:solid 1px #ced9df; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:none; text-indent:10px;}
+.form-info li .control-def{overflow: hidden;width:320px; height:32px; line-height:32px; border-top:solid 1px #ced9df; border-left:solid 1px #ced9df; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:none; text-indent:10px;}
 .form-info li .textinput{border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; padding:10px; width:504px; height:135px; line-height:20px; overflow:hidden;}
 .form-info .btn{width:95px;height:35px; background-color: #2598d0; border-radius: 4px; font-size:14px; color:#fff; cursor:pointer; margin-left: 180px;margin-top: 20px;}
-.form-info span{line-height:34px;display:table;white-space: normal;}
-.form-info a{line-height:34px;}
+.form-info span{line-height:33px;display:table;white-space: normal;}
+.form-info a{line-height:33px;}
 .form-info span.error{display:inline-block;}
 .form-info a span{line-height:14px;display:inline-block;}
 .form-info .bootstrap-table {display:inline-block;}
@@ -348,4 +348,11 @@ input[type=file] {
 
 .pop-form .form-body .form-info {
 	padding: 0px;
+}
+.float-img {
+	position: absolute;
+	z-index: 10000;
+	transition: .3s all;
+	display: none;
+	box-shadow: 0 16px 28px rgba(0, 0, 0, 0.22), 0 25px 55px rgba(0, 0, 0, 0.21);
 }

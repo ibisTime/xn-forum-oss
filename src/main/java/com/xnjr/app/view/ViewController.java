@@ -66,4 +66,13 @@ public class ViewController extends BaseController {
   	    return BizConnecter.getBizData("806053", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
+    
+    // 列表查询地方视图
+    @RequestMapping(value = "/list/company", method = RequestMethod.GET)
+    @ResponseBody
+    public Object viewCompanyList(@RequestParam Map<String,String> allRequestParams) {
+    	//allRequestParams.put("userId", this.getSessionUser().getUserId());
+  	    return BizConnecter.getBizData("806051", JsonUtils.mapToJson(allRequestParams),
+              Object.class);
+    }
 }

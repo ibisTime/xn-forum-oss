@@ -158,6 +158,14 @@ public class UserController extends BaseController {
         return userAO.cancelUser(userId, this.getSessionUser().getUserName(),
             remark);
     }
+    
+    @RequestMapping(value = "/unlock", method = RequestMethod.POST)
+    @ResponseBody
+    public Object unlockUser(@RequestParam("userId") String userId,
+            @RequestParam(value = "remark", required = false) String remark) {
+        return userAO.unlockUser(userId, this.getSessionUser().getUserName(),
+            remark);
+    }
 
     @RequestMapping(value = "/active", method = RequestMethod.POST)
     @ResponseBody

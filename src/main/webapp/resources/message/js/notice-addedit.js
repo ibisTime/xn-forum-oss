@@ -36,7 +36,16 @@ $(function() {
 		defaultOption: 'All',
 		defaultValue: isGlobal ? '0' : getCityId(getUserId()),
 		hidden: !isGlobal,
-		required: true
+		required: true,
+		onChange: function(v, r) {
+			v = (v == '0' ? '' : v);
+			$('#toUser').renderDropdown({
+				url: $('#basePath').val() + '/customer/page?level='+(($('#toLevel').val() == '0') ? '' : $('#toLevel').val())+'&companyCode='+v+'&start=1&limit=100000',
+				keyName: 'userId',
+				valueName: 'loginName',
+				defaultOption: '<option value="0">All</option>'
+			});
+		}
 	}, {
 		field : 'toLevel',
 		title : '作用等级',
@@ -45,15 +54,20 @@ $(function() {
 		keyName: 'code',
 		valueName: 'name',
 		defaultOption: 'All',
-		defaultValue: '0',
-		required: true
+		required: true,
+		onChange: function(v, r) {
+			v = (v == '0' ? '' : v);
+			$('#toUser').renderDropdown({
+				url: $('#basePath').val() + '/customer/page?level='+v+'&companyCode='+($('#toCompany').val() == 0 ? '' : $('#toCompany').val())+'&start=1&limit=100000',
+				keyName: 'userId',
+				valueName: 'loginName',
+				defaultOption: '<option value="0">All</option>'
+			});
+		}
 	}, {
 		field : 'toUser',
 		title : '作用人',
 		type: 'select',
-		url: $('#basePath').val() + '/customer/page?companyCode='+getCityId(getUserId())+'&start=1&limit=100000',
-		keyName: 'userId',
-		valueName: 'loginName',
 		defaultOption: 'All',
 		defaultValue: '0',
 		required: true

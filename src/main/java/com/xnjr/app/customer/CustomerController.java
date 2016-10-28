@@ -43,6 +43,10 @@ public class CustomerController extends BaseController {
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     @ResponseBody
     public Object customerDetail(@RequestParam Map<String,String> allRequestParams) {
+    	String code = allRequestParams.get("code");
+    	if (code != null) {
+    		allRequestParams.put("userId", allRequestParams.get("code"));
+    	}
   	    return BizConnecter.getBizData("805056", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
@@ -55,4 +59,12 @@ public class CustomerController extends BaseController {
   	    return BizConnecter.getBizData("805077", JsonUtils.mapToJson(allRequestParams),
               Object.class);
     }
+    
+    // 新增客户
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public Object customerAdd(@RequestBody Map map) {
+  		return BizConnecter.getBizData("805079", JsonUtils.mapToJson(map),
+              Object.class);
+	}
 }

@@ -11,14 +11,20 @@ $(function(){
 		checkbox : true
 	},{
 		field : 'loginName',
-		title : '用户名',
+		title : '登录名',
 		search: true
+	},{
+		field : 'nickname',
+		title : '昵称'
 	},{
 		field : 'mobile',
 		title : '手机号'
     },{
 		field : 'email',
-		title : '邮箱'
+		title : '邮箱',
+		formatter: function(v, r) {
+			return r.userExt && r.userExt.email;
+		}
     },{
     	field : 'status',
 		title : '状态',
@@ -38,7 +44,7 @@ $(function(){
 		field: 'companyName',
 		title: '归属'
 	},{
-		field : 'ljAmount',
+		field : 'amount',
 		title : '积分',
 		formatter: moneyFormat
 	},{
@@ -46,7 +52,7 @@ $(function(){
 		title : '备注'
 	}];
 	
-	var options = {pageRouter: 'user/customer'};
+	var options = {pageRouter: '/user/customer'};
 	if (!isGlobal) {
 		options.searchParams = {
 			'companyCode': getCityId(getUserId())
@@ -60,17 +66,24 @@ $(function(){
 			alert("请选择记录");
 			return;
 		}
-		if(!confirm("确认锁定用户["+selRecords[0].loginName+"]?")){
-    		return false;
-    	}
+		
 		var data = {"userId":selRecords[0].userId};
-		var url = $("#basePath").val()+"/user/drop";
+		var url = $("#basePath").val()+"/user/" + (selRecords[0].status == 0 ? 'drop' : 'active');
 		doPostAjax(url, data, function(res) {
 			if (res.success) {
 				alert('操作成功');
 				$('#tableList').bootstrapTable('refresh',{url: $('#tableList').bootstrapTable('getOptions').url});
 			}
 		});
+	});
+	
+	$('#detail1Btn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections');
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		location.href = $("#basePath").val() + "/user/customer_detail.htm?code=" + selRecords[0].userId;
 	});
 })
 

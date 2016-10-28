@@ -23,12 +23,7 @@ $(function(){
 		search: true,
 		key: 'active_status'
     },{
-    	field : 'orderNo',
-		title : '位置',
-		formatter: Dict.getNameForList('plate_location'),
-		key: 'plate_location'
-	}, {
-		field : 'userId',
+		field : 'loginName',
 		title : '版主'
 	}, {
 		field: 'remark',

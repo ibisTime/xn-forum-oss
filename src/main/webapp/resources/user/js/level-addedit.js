@@ -5,25 +5,24 @@ $(function() {
 	
 	var fields = [{
 		title: '名称',
-		field: 'level',
+		field: 'name',
 		required: true,
-		maxlength: 4
+		maxlength: 10
 	}, {
 		title: '积分上',
 		field: 'amountMax',
 		required: true,
-		number: true,
-		maxlength: 15
+		amount: true
 	}, {
 		title: '积分下',
 		field: 'amountMin',
 		required: true,
-		number: true,
-		maxlength: 15
+		amount: true
 	}, {
 		title: '是否审核',
-		field: 'isCheck',
+		field: 'effect',
 		required: true,
+		formatter: Dict.getNameForList('true_false'),
 		type: 'select',
 		key: 'true_false'
 	}, {

@@ -144,15 +144,9 @@ $(function() {
 			alert("请选择记录");
 			return;
 		}
-		if(selRecords[0].status != 0){
-			alert("请选择正常记录");
-			return;
-		}
-		if(!confirm("确认锁定用户["+selRecords[0].loginName+"]?")){
-    		return false;
-    	}
+		
 		var data = {"userId":selRecords[0].userId};
-		var url = $("#basePath").val()+"/user/drop";
+		var url = $("#basePath").val()+"/user/" + (selRecords[0].status == 0 ? 'drop' : 'active');
 		doPostAjax(url, data, doSuccessDelBack);
 	});
 	

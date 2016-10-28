@@ -15,7 +15,8 @@ $(function(){
 		search: true
 	}, {
 		field : 'value',
-		title : '权重'
+		title : '权重',
+		formatter: moneyFormat
 	}, {
     	field : 'level',
 		title : '作用等级',

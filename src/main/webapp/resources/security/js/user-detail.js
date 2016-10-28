@@ -43,6 +43,9 @@ $(function() {
 				required: true,
 				maxlength: 16
 			},
+			roleId: {
+				required: true
+			},
 			remark: {
 				maxlength: 200
 			}

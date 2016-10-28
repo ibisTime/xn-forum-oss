@@ -15,7 +15,7 @@ $(function() {
 		number: true,
 		min: 0,
 		max: 1,
-		value: 0,
+		value: 1,
 		hidden: true
 	}, {
 		field : 'level',
@@ -34,7 +34,7 @@ $(function() {
 		required: true,
 		type: 'select',
 		key: 'kw_reaction',
-		defaultValue: '2',
+		defaultValue: '3',
 		hidden: true
 	}, {
 		title: '备注',

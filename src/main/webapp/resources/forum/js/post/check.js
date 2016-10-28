@@ -25,7 +25,7 @@ $(function(){
 		key: 'post_status',
 		data: {'C1': '不信任待审批', 'C2': '被举报待审批', 'F': '被过滤'}
     }, {
-    	field : 'publisher',
+    	field : 'loginName',
 		title : '发帖人'
 	}, {
 		field: 'publishDatetime',

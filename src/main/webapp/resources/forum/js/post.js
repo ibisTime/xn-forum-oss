@@ -22,10 +22,15 @@ $(function(){
 		title : '状态',
 		formatter: Dict.getNameForList('post_status'),
 		search: true,
-		key: 'post_status',
-		data: {'B': '已发布', 'D': '审批通过'}
+		key: 'post_status'
     }, {
-    	field : 'publisher',
+    	field: 'location',
+    	title : '位置',
+		formatter: Dict.getNameForList('post_location'),
+		search: true,
+		key: 'post_location'
+    }, {
+    	field : 'loginName',
 		title : '发帖人'
 	}, {
 		field: 'publishDatetime',
@@ -37,8 +42,7 @@ $(function(){
 	}];
 	buildList(router, columns, {
 		searchParams: {
-			siteCode: getCityId(getUserId()),
-			status: 'BD'
+			siteCode: getCityId(getUserId())
 		},
 		singleSelect: false
 	});
@@ -47,6 +51,10 @@ $(function(){
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
+			return;
+		}
+		if(selRecords.length >= 2){
+			alert("请选择一条记录");
 			return;
 		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=1&code="+(selRecords[0].code || selRecords[0].id);
@@ -58,6 +66,10 @@ $(function(){
 			alert("请选择记录");
 			return;
 		}
+		if(selRecords.length >= 2){
+			alert("请选择一条记录");
+			return;
+		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=2&code="+(selRecords[0].code || selRecords[0].id);
 	});
 	
@@ -65,6 +77,10 @@ $(function(){
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
+			return;
+		}
+		if(selRecords.length >= 2){
+			alert("请选择一条记录");
 			return;
 		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=5&code="+(selRecords[0].code || selRecords[0].id);
@@ -76,6 +92,10 @@ $(function(){
 			alert("请选择记录");
 			return;
 		}
+		if(selRecords.length >= 2){
+			alert("请选择一条记录");
+			return;
+		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=3&code="+(selRecords[0].code || selRecords[0].id);
 	});
 	
@@ -83,6 +103,10 @@ $(function(){
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
+			return;
+		}
+		if(selRecords.length >= 2){
+			alert("请选择一条记录");
 			return;
 		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=4&code="+(selRecords[0].code || selRecords[0].id);

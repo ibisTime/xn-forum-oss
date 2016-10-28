@@ -12,10 +12,12 @@ $(function(){
 		search: true
 	},{
 		field : 'amountMin',
-		title : '积分下'
+		title : '积分下',
+		formatter: moneyFormat
     },{
     	field : 'amountMax',
-		title : '积分上'
+		title : '积分上',
+		formatter: moneyFormat
     },{
     	field: 'effect',
     	title: '是否审核',

@@ -55,7 +55,16 @@ $(function(){
 		field : 'remark',
 		title : '备注'
 	}];
-	var options = {pageRouter: '/message/notice'};
+	var options = {
+			pageRouter: '/message/notice', 
+			beforeEdit: function(r) {
+				if (r.status == 1) {
+					alert('该记录无法进行该操作');
+					return false;
+				}
+				return true;
+			}
+	};
 	if (!isGlobal) {
 		options.searchParams = {
 			'companyCode': getCityId(getUserId()),

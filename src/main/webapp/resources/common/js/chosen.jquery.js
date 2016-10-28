@@ -553,7 +553,7 @@
       return true;
     };
 
-    AbstractChosen.default_multiple_text = "Select Some Options";
+    AbstractChosen.default_multiple_text = "请选择";
 
     AbstractChosen.default_single_text = "请选择";
 
