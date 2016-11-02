@@ -29,11 +29,6 @@ $(function() {
 		type: 'select',
 		key: 'order_status'
 	}, {
-		title: '提货人',
-		field: 'taker',
-		required: true,
-		maxlength: 10
-	}, {
 		title: '意见说明',
 		field: 'takeNote',
 		maxlength: 250

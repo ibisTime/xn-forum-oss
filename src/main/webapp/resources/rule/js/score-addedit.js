@@ -14,7 +14,7 @@ $(function() {
 		field: 'value',
 		required: true,
 		maxlength: 30,
-		number: true
+		amount: true
 	}, {
 		field : 'level',
 		title : '作用等级',

@@ -26,7 +26,7 @@ $(function() {
 		readonly: true
 	}, {
 		title: '邮箱',
-		field: 'email',
+		field: 'userExt-email',
 		readonly: true
 	}, {
 		title: '状态',

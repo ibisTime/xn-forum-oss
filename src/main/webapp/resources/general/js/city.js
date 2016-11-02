@@ -16,7 +16,6 @@ $(function() {
 		title : '优先级',
 		formatter: Dict.getNameForList('city_location'),
 		search: true,
-		multiple: true,
 		key: 'city_location'
     },{
     	field : 'userId',

@@ -32,8 +32,8 @@ $(function(){
 		title: '发布时间',
 		formatter: dateTimeFormat
 	}, {
-		field : 'remark',
-		title : '备注'
+		field: 'remark',
+		title: '备注'
 	}];
 	buildList(router, columns, {
 		searchParams: {

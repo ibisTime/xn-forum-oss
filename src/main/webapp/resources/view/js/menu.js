@@ -40,6 +40,13 @@ $(function() {
 				return '私有';
 			}
 		}
+	}, {
+		field: 'companyCode',
+		title: '所属城市',
+		type: 'select',
+		url: $('#basePath').val() + '/general/city/list',
+		keyName: 'code',
+		valueName: 'name'
 	}];
 	
 	var searchParams = {isDfNavigate: 0,companyCode: 0};
@@ -51,7 +58,14 @@ $(function() {
 	buildList(router, columns, {
 		searchParams: searchParams,
 		pageRouter: '/view/menu',
-		urlParams: isBranch ? {b: 1} : {}
+		urlParams: isBranch ? {b: 1} : {},
+		beforeEdit: function(data) {
+			if (data.companyCode != '0' && !isBranch) {
+				alert('私有记录不能修改');
+				return false;
+			}
+			return true;
+		}
 	});
 });
 

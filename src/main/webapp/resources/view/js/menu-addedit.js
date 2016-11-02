@@ -4,8 +4,18 @@ $(function() {
 	var isBranch = !!getQueryString('b');
 	var router = '/view';
 	
+	var innerSelect = {'page:headline': '头条页', 
+			'page:forum': '有料页',
+			'page:xiaomi': '客服页',
+			'page:custom': '自定义页',
+			'page:mine': '个人中心页',
+			'page:mall': '商城页',
+			'page:board': '版块页'};
+	
 	if (!code && isBranch) {
 		$('.form-title').after('<div class="alert-warning">请先修改类型为菜单的记录，方可新增该菜单的引流</div>');
+	} else {
+		innerSelect['page:signin'] = '签到';
 	}
 	
 	var fields = [{
@@ -30,7 +40,12 @@ $(function() {
 		type: 'select',
 		hidden: true,
 		key: 'view_type',
-		defaultValue: isBranch ? '4': ''
+		defaultValue: isBranch ? '4': '',
+		afterSet: function(v) {
+			if (v == 1 && isBranch) {
+				$('#orderNo').parent().hide();
+			}
+		}
 	}, {
 		title: '名字',
 		field: 'name',
@@ -88,18 +103,13 @@ $(function() {
 		field: 'url1',
 		required: true,
 		type: 'select',
-		data: {'page:headline': '头条页', 
-			'page:forum': '有料页',
-			'page:xiaomi': '客服页',
-			'page:custom': '自定义页',
-			'page:mine': '个人中心页',
-			'page:mall': '商城页',
-			'page:signin': '签到',
-			'page:board': '版块页'},
+		data: innerSelect,
 		onChange: function(r) {
 			$('#url').val(r);
 			if (r == 'page:board') {
 				$('#plateCode').parent().show();
+			} else {
+				$('#plateCode').parent().hide();
 			}
 		},
 		value: function(r) {

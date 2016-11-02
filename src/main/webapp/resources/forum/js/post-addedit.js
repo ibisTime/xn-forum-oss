@@ -27,6 +27,17 @@ $(function() {
 		readonly: true,
 		type: 'img'
 	}, {
+		field: 'location',
+    	title : '位置',
+		key: 'post_location',
+		type: 'select',
+		readonly: true
+	}, {
+		field: 'validDatetimeEnd',
+		title: '位置失效时间',
+		formatter: dateTimeFormat,
+		readonly: true
+	}, {
 		title: '发帖人',
 		field: 'loginName',
 		readonly: true
@@ -36,15 +47,25 @@ $(function() {
 		readonly: true,
 		formatter: dateTimeFormat
 	}, {
+		title: '复核人',
+		field: 'approver',
+		readonly: true
+	}, {
+		title: '复核时间',
+		field: 'approveDatetime',
+		readonly: true,
+		formatter: dateTimeFormat
+	}, {
+		title: '意见说明',
+		field: 'approveNote1',
+		'[value]': 'approveNote',
+		readonly: true
+	}, {
 		title: '状态',
 		field: 'status',
 		readonly: true,
 		type: 'select',
 		key: 'post_status'
-	}, {
-		title: '备注',
-		field: 'remark',
-		readonly: true
 	}, {
 		title: '有效期',
 		field: 'endDatetime',
@@ -72,6 +93,7 @@ $(function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
 					data.location = 'A';
+					data.isAdd = '1';
 					var url = $("#basePath").val()+ router + "/location";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {
@@ -89,6 +111,7 @@ $(function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
 					data.location = 'B';
+					data.isAdd = '1';
 					var url = $("#basePath").val()+ router + "/location";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {
@@ -106,6 +129,7 @@ $(function() {
 				if ($('#jsForm').valid()) {
 					var data = $('#jsForm').serializeObject();
 					data.location = 'C';
+					data.isAdd = '1';
 					var url = $("#basePath").val()+ router + "/location";
 					ajaxPost(url, data).then(function(res) {
 						if (res.success) {
@@ -161,8 +185,69 @@ $(function() {
 		}
 	});
 	
-	buildDetail(router, fields, code, {
-		buttons: buttons
-	});
+	var options = {};
+	options.buttons = buttons;
+	options.afterData = function(data) {
+		if (type == 1 && data.location == 'A') {
+			$('#endDatetime').parent().hide();
+			$('#btn-0').val('取消置顶');
+			$('#btn-0').off('click');
+			$('#btn-0').on('click', function() {
+				if ($('#jsForm').valid()) {
+					var data1 = $('#jsForm').serializeObject();
+					data1.location = 'A';
+					data1.isAdd = '0';
+					var url = $("#basePath").val()+ router + "/location";
+					ajaxPost(url, data1).then(function(res) {
+						if (res.success) {
+							alert("操作成功");
+							goBack();
+						}
+					});
+				}
+			});
+			
+		} else if (type == 2 && data.location == 'B') {
+			$('#endDatetime').parent().hide();
+			$('#btn-0').val('取消精华');
+			$('#btn-0').off('click');
+			$('#btn-0').on('click', function() {
+				if ($('#jsForm').valid()) {
+					var data1 = $('#jsForm').serializeObject();
+					data1.location = 'B';
+					data1.isAdd = '0';
+					var url = $("#basePath").val()+ router + "/location";
+					ajaxPost(url, data1).then(function(res) {
+						if (res.success) {
+							alert("操作成功");
+							goBack();
+						}
+					});
+				}
+			});
+			
+		} else if (type == 5 && data.location == 'C') {
+			$('#endDatetime').parent().hide();
+			$('#btn-0').val('取消头条');
+			$('#btn-0').off('click');
+			$('#btn-0').on('click', function() {
+				if ($('#jsForm').valid()) {
+					var data1 = $('#jsForm').serializeObject();
+					data1.location = 'C';
+					data1.isAdd = '0';
+					var url = $("#basePath").val()+ router + "/location";
+					ajaxPost(url, data1).then(function(res) {
+						if (res.success) {
+							alert("操作成功");
+							goBack();
+						}
+					});
+				}
+			});
+			
+		}
+	}
+	
+	buildDetail(router, fields, code, options);
 	
 });

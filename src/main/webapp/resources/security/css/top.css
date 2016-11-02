@@ -3,7 +3,7 @@
 /*body*/
 body{background:url(../images/topbg.gif) repeat-x;}
 
-.top-left{height:88px;background:url(../images/topleft.jpg) no-repeat;float:left; width:300px;}
+.top-left{height:88px;background:url(../images/topleft.jpg) no-repeat;float:left; width:187px;}
 .top-left img{margin-top:12px;margin-left:10px;}
 .top-right{height:88px;background:url(../images/topright.jpg) no-repeat right;float:right;}
 .nav{float:left;}

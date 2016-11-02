@@ -40,18 +40,8 @@ $(function() {
 		type: 'select',
 		key: 'post_status'
 	}, {
-		title: '复核人',
-		field: 'approver',
-		readonly: true
-	}, {
-		title: '复核时间',
-		field: 'approveDatetime',
-		readonly: true,
-		formatter: dateTimeFormat
-	}, {
-		title: '复核说明',
-		field: 'approveNote1',
-		'[value]': 'approveNote',
+		field: 'remark',
+		title: '备注',
 		readonly: true
 	}, {
 		title: '意见说明',

@@ -280,6 +280,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/level/add", method = RequestMethod.POST)
     @ResponseBody
     public Object levelAdd(@RequestBody Map map) {
+    	map.put("updater", this.getSessionUser().getUserName());
   		return BizConnecter.getBizData("805110", JsonUtils.mapToJson(map),
               Object.class);
 	}
@@ -296,6 +297,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/level/edit", method = RequestMethod.POST)
     @ResponseBody
     public Object levelEdit(@RequestBody Map map) {
+    	map.put("updater", this.getSessionUser().getUserName());
   		return BizConnecter.getBizData("805112", JsonUtils.mapToJson(map),
               Object.class);
 	}

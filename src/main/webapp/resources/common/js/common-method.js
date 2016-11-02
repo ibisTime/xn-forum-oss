@@ -691,6 +691,9 @@ function buildList(router, columns, options) {
 				};
 			})(dataDict);
 		}
+		if (item.value) {
+			$('#' + item.field).val(item.value);
+		}
 	}
 	
 	$('#searchBtn').click(function() {
@@ -1050,9 +1053,14 @@ function buildDetail(router, fields, code, options) {
 				for (var i = 0, len = fields.length; i < len; i++) {
 					var item = fields[i];
 					var value = item.value;
+					var displayValue = data[item.field];
+					if (item.field.indexOf('-') > -1) {
+						var fs = item.field.split('-');
+						displayValue = data[fs[0]][fs[1]];
+					}
 					if (item.readonly) {
 						if (item.type == 'select' && item.data) {
-							var realValue = data[item.field];
+							var realValue = displayValue;
 							if (item.value) {
 								if (item.value.call) {
 									realValue = item.value(data);
@@ -1067,7 +1075,7 @@ function buildDetail(router, fields, code, options) {
 							}
 						}
 						else if (item.type == 'select' && !item.url) {
-							var realValue = data[item.field];
+							var realValue = displayValue;
 							if (item.value) {
 								if (item.value.call) {
 									realValue = item.value(data);
@@ -1075,7 +1083,7 @@ function buildDetail(router, fields, code, options) {
 									realValue = item.value;
 								}
 							}
-							$('#' + item.field).html(Dict.getName(item.key, realValue));
+							$('#' + item.field).html(Dict.getName(item.key, realValue || '0'));
 							$('#' + item.field).attr('data-value', realValue);
 							if (item.onChange) {
 								item.onChange(realValue);
@@ -1083,7 +1091,7 @@ function buildDetail(router, fields, code, options) {
 						} else if (item.type == 'radio') {
 							var selectOne = '';
 							for (var k = 0, len1 = item.items.length; k < len1; k++) {
-								if (item.items[k].key == data[item.field]) {
+								if (item.items[k].key == displayValue) {
 									selectOne = item.items[k];
 									break;
 								}
@@ -1091,7 +1099,7 @@ function buildDetail(router, fields, code, options) {
 							$('#' + item.field).html('<div class="zmdi '+selectOne.icon+' zmdi-hc-5x" title="'+selectOne.value+'"></div>');
 						} else if (item.type == 'select' && item.url) {
 							var params = {};
-							var realValue = data[item['[value]']] || data[item.field] || '';
+							var realValue = data[item['[value]']] || displayValue || '';
 							if (item.value && item.value.call) {
 								realValue = item.value(data);
 							}
@@ -1112,7 +1120,7 @@ function buildDetail(router, fields, code, options) {
 							
 							
 						} else if (item.type == 'img') {
-							var realValue = data[item['[value]']] || data[item.field] || '';
+							var realValue = data[item['[value]']] || displayValue || '';
 							if ($.isArray(realValue)) {
 								var imgHtml = '';
 								realValue.forEach(function(img) {
@@ -1124,7 +1132,10 @@ function buildDetail(router, fields, code, options) {
 							}
 							
 						} else {
-							if (item.field in data) {
+							if (item.field.indexOf('-') > -1) {
+								$('#' + item.field).html((item.amount ? moneyFormat(displayValue) : displayValue) || '-');
+							}
+							else if (item.field in data) {
 								$('#' + item.field).html((item.amount ? moneyFormat(data[item.field]) : data[item.field]));
 							} else {
 								$('#' + item.field).html('-');
@@ -1132,11 +1143,11 @@ function buildDetail(router, fields, code, options) {
 							
 						}
 						if (item.formatter) {
-							$('#' + item.field).html(item.formatter(data[item.field], data));
+							$('#' + item.field).html(item.formatter(displayValue, data));
 						}
 						if (item['[value]']) {
 							if (item.type == 'img') {
-								var realValue = data[item['[value]']] || data[item.field] || '';
+								var realValue = data[item['[value]']] || displayValue || '';
 								if (realValue.indexOf('http://') > -1) {
 									$('#' + item.field).attr('src', realValue);
 								}
@@ -1147,12 +1158,12 @@ function buildDetail(router, fields, code, options) {
 						}
 					} else {
 						if (item.type == 'img') {
-							var realValue = data[item['[value]']] || data[item.field] || '';
+							var realValue = data[item['[value]']] || displayValue || '';
 							if (realValue.indexOf('http://') > -1) {
 								$('#' + item.field).attr('src', realValue);
 							}
 						} else if (item.type == 'radio') {
-							$('input[name='+item.field+'][value='+data[item.field]+']').prop('checked', true);
+							$('input[name='+item.field+'][value='+displayValue+']').prop('checked', true);
 						} else if (item.type == 'textarea') {
 							(function(f) {
 								UE.getEditor(f).ready(function() {
@@ -1171,7 +1182,7 @@ function buildDetail(router, fields, code, options) {
 							$('#city').trigger('change');
 							$('#area').val(data.area);
 						} else {
-							$('#' + item.field).val(item.amount ? moneyFormat(data[item.field]) : data[item.field]);
+							$('#' + item.field).val(item.amount ? moneyFormat(displayValue) : displayValue);
 						}
 					}
 					
@@ -1186,7 +1197,7 @@ function buildDetail(router, fields, code, options) {
 					
 					if (item['[value]']) {
 						if (item.type == 'img') {
-							var realValue = data[item['[value]']] || data[item.field] || '';
+							var realValue = data[item['[value]']] || displayValue || '';
 							if (realValue.indexOf('http://') > -1) {
 								$('#' + item.field).attr('src', realValue);
 							}
@@ -1201,10 +1212,13 @@ function buildDetail(router, fields, code, options) {
 					}
 					
 					if (item.afterSet) {
-						item.afterSet(data[item.field], data);
+						item.afterSet(displayValue, data);
 					}
 					
+					
+					
 				}
+				options.afterData && options.afterData(data);
 			}
 		});
 	}

@@ -37,8 +37,8 @@ $(function(){
 		title: '发布时间',
 		formatter: dateTimeFormat
 	}, {
-		field : 'remark',
-		title : '备注'
+		field: 'remark',
+		title: '备注'
 	}];
 	buildList(router, columns, {
 		searchParams: {
@@ -57,6 +57,10 @@ $(function(){
 			alert("请选择一条记录");
 			return;
 		}
+		if (selRecords[0].status == 'A') {
+			alert('该记录不能进行该操作');
+			return;
+		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=1&code="+(selRecords[0].code || selRecords[0].id);
 	});
 	
@@ -68,6 +72,10 @@ $(function(){
 		}
 		if(selRecords.length >= 2){
 			alert("请选择一条记录");
+			return;
+		}
+		if (selRecords[0].status == 'A') {
+			alert('该记录不能进行该操作');
 			return;
 		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=2&code="+(selRecords[0].code || selRecords[0].id);
@@ -83,6 +91,10 @@ $(function(){
 			alert("请选择一条记录");
 			return;
 		}
+		if (selRecords[0].status == 'A') {
+			alert('该记录不能进行该操作');
+			return;
+		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=5&code="+(selRecords[0].code || selRecords[0].id);
 	});
 	
@@ -96,6 +108,10 @@ $(function(){
 			alert("请选择一条记录");
 			return;
 		}
+		if (selRecords[0].status == 'A') {
+			alert('该记录不能进行该操作');
+			return;
+		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=3&code="+(selRecords[0].code || selRecords[0].id);
 	});
 	
@@ -107,6 +123,10 @@ $(function(){
 		}
 		if(selRecords.length >= 2){
 			alert("请选择一条记录");
+			return;
+		}
+		if (selRecords[0].status == 'A') {
+			alert('该记录不能进行该操作');
 			return;
 		}
 		window.location.href = $("#basePath").val()+ "/forum/post_addedit.htm?type=4&code="+(selRecords[0].code || selRecords[0].id);

@@ -25,19 +25,23 @@ $(function(){
 		title : '状态',
 		formatter: Dict.getNameForList('comment_status'),
 		type: 'select',
+		search: true,
+		value: 'C2',
 		key: 'comment_status'
     }, {
-    	field : 'commer',
+    	field : 'loginName',
 		title : '评论人'
 	}, {
 		field: 'commDatetime',
 		title: '评论时间',
 		formatter: dateTimeFormat
+	}, {
+		field: 'remark',
+		title: '备注'
 	}];
 	buildList(router, columns, {
 		searchParams: {
-			siteCode: getCityId(getUserId()),
-			status: 'C2'
+			siteCode: getCityId(getUserId())
 		},
 		singleSelect: false
 	});

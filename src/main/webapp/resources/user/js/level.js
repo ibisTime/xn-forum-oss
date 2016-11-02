@@ -25,6 +25,13 @@ $(function(){
     	type: 'select',
     	key: 'true_false'
     },{
+    	field: 'updater',
+    	title: '最近修改人'
+    },{
+    	field: 'updateDatetime',
+    	title: '最近修改时间',
+    	formatter: dateTimeFormat
+    },{
 		field : 'remark',
 		title : '备注'
 	}];
