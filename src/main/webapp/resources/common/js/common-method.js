@@ -1054,7 +1054,7 @@ function buildDetail(router, fields, code, options) {
 					var item = fields[i];
 					var value = item.value;
 					var displayValue = data[item.field];
-					if (item.field.indexOf('-') > -1) {
+					if (item.field && item.field.indexOf('-') > -1) {
 						var fs = item.field.split('-');
 						displayValue = data[fs[0]][fs[1]];
 					}
@@ -1132,7 +1132,7 @@ function buildDetail(router, fields, code, options) {
 							}
 							
 						} else {
-							if (item.field.indexOf('-') > -1) {
+							if (item.field && item.field.indexOf('-') > -1) {
 								$('#' + item.field).html((item.amount ? moneyFormat(displayValue) : displayValue) || '-');
 							}
 							else if (item.field in data) {
