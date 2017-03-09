@@ -13,10 +13,11 @@ $(function(){
 	}, {
 		field : 'kind',
 		title : '大类',
-		formatter: Dict.getNameForList('prod_kind'),
+		url: $('#basePath').val() + '/store/product/kind/list?companyCode=' + getCityId(getUserId()),
 		search: true,
 		type: 'select',
-		key: 'prod_kind'
+		keyName: 'code',
+		valueName: 'name'
     }, {
     	field: 'price',
     	title: '定价（积分）',

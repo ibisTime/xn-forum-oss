@@ -4,13 +4,14 @@ $(function() {
 	var router = '/forum/board';
 	
 	var fields = [{
-		title: '大类',
-		field: 'kind',
-		required: true,
+		field : 'kind',
+		title : '大类',
+		url: $('#basePath').val() + '/forum/board/kind/detail',
 		type: 'select',
-		key: 'plate_kind',
+		keyName: 'code',
+		valueName: 'name',
 		readonly: true
-	}, {
+    },{
 		title: '名称',
 		field: 'name',
 		required: true,

@@ -2,7 +2,7 @@ $(function() {
 	//按钮权限判断
 	showPermissionControl();
 	var isBranch = !!getQueryString('b');
-	
+
 	var router = '/view';
 	var columns = [{
 		field : '',
@@ -48,13 +48,13 @@ $(function() {
 		keyName: 'code',
 		valueName: 'name'
 	}];
-	
+
 	var searchParams = {isDfNavigate: 0,companyCode: 0};
 	if (isBranch) {
 		searchParams.companyCode = getCityId(getUserId());
 		searchParams.isDfNavigate = 1;
 	}
-	
+
 	buildList(router, columns, {
 		searchParams: searchParams,
 		pageRouter: '/view/menu',
@@ -67,5 +67,22 @@ $(function() {
 			return true;
 		}
 	});
+	$('#editBtn').off("click").click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections');
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		else if(selRecords.length >= 2){
+			alert("请选择一条记录");
+			return;
+		}
+		if (selRecords[0].companyCode != '0' && !isBranch) {
+			alert('私有记录不能修改');
+			return false;
+		}
+		var param = isBranch ? "&b=1" : "";
+		param = param + (selRecords[0].parentCode ? "&p=" + selRecords[0].parentCode : "");
+		window.location.href = $("#basePath").val() + "/view/menu_addedit.htm?code="+(selRecords[0].code || selRecords[0].id) + param;
+	});
 });
-

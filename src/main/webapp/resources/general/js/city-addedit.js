@@ -70,4 +70,51 @@ $(function() {
 	
 	buildDetail(router, fields, code);
 	
+	if(!code){
+		$('#subBtn').off("click").click(function() {
+			if ($('#jsForm').valid()) {
+				var data = $('#jsForm').serializeObject();
+				$('#jsForm').find('input[type=file]').parent().next().each(function(i, el) {
+					data[el.id] = $(el).attr('src');
+				});
+				if ($('#jsForm').find('#province')[0]) {
+					var province = $('#province').val();
+					var city = $('#city').val();
+					var area = $('#area').val();
+					if (!city) {
+						data['city'] = province;
+						data['area'] = province;
+					} else if (!area) {
+						data['city'] = province;
+						data['area'] = city;
+					} 
+				}
+				for (var i = 0, len = fields.length; i < len; i++) {
+					var item = fields[i];
+					if (item.equal && (!$('#' + item.field).is(':hidden') || !$('#' + item.field + 'Img').is(':hidden'))) {
+						data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
+					} else if (item.emptyValue && !data[item.field]) {
+						data[item.field] = item.emptyValue;
+					} else if (item.pass) {
+						data[item.field] = $('#' + item.field).attr('data-value') || $('#' + item.field).html();
+					}
+				}
+				data["isNeedInitPwd"] = "1";
+				var url = $("#basePath").val()+ router + "/" + (code ? 'edit' : 'add');
+				var url1 = $("#basePath").val()+ router + "/initblock";
+				ajaxPost(url, data).then(function(res) {
+					if (res.success) {
+						ajaxPost(url1, {companyCode: res.data.code})
+							.then(function(res){
+								if(res.success){
+									alert("操作成功");
+									goBack();
+								}
+							});
+					}
+				});
+			}
+		});
+	}
+	
 });

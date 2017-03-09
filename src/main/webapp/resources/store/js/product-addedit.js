@@ -43,13 +43,16 @@ $(function() {
 		maxlength: 10,
 		readonly: isUpdown
 	}, {
-		title: '大类',
-		field: 'kind',
+		field : 'kind',
+		title : '大类',
+		url: $('#basePath').val() + '/store/product/kind/list?companyCode=' + getCityId(getUserId()),
+		search: true,
 		required: true,
 		type: 'select',
-		key: 'prod_kind',
+		keyName: 'code',
+		valueName: 'name',
 		readonly: isUpdown
-	}, {
+    }, {
 		title: '简介',
 		field: 'description',
 		required: true,

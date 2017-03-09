@@ -192,6 +192,10 @@
 		    <mvc:mapping path="/score/**"/>
 		    <!-- 视图相关end -->
 		    
+		    <!-- 视图相关start -->
+		    <mvc:mapping path="/store/**"/>
+		    <!-- 视图相关end -->
+		    
 		    <!-- 论坛相关start -->
 		    <mvc:mapping path="/forum/**"/>
 		    <!-- 论坛相关end -->

@@ -969,6 +969,13 @@ function buildDetail(router, fields, code, options) {
 					data[item.equal] = $('#' + item.field).val() || $('#' + item.field).attr('src');
 				} else if (item.emptyValue && !data[item.field]) {
 					data[item.field] = item.emptyValue;
+				} else if (item.pass) {
+					data[item.field] = $('#' + item.field).attr('data-value') || $('#' + item.field).html();
+				}
+			}
+			if (options.beforeSubmit) {
+				if (!options.beforeSubmit(data)) {
+					return;
 				}
 			}
 			var url = $("#basePath").val()+ router + "/" + (code ? 'edit' : 'add');
@@ -1035,7 +1042,7 @@ function buildDetail(router, fields, code, options) {
 	if (!code) {
 		for (var i = 0, len = fields.length; i < len; i++) {
 			var item = fields[i];
-			if ('value' in item && !item.value.call) {
+			if ('value' in item && item.value != undefined && item.value !== "" && !item.value.call) {
 				$('#' + item.field).val(item.value);
 			}
 			

@@ -13,6 +13,11 @@ $(function(){
 		title : '标题',
 		search: true
 	},{
+		field : 'type',
+		title : '类型',
+		formatter: Dict.getNameForList('msg_type'),
+		key: 'msg_type'
+	}, {
     	field : 'toCompany',
 		title : '作用地区',
 		search: true,
@@ -67,16 +72,14 @@ $(function(){
 	};
 	if (!isGlobal) {
 		options.searchParams = {
-			'companyCode': getCityId(getUserId()),
-			type: 1
+			'companyCode': getCityId(getUserId())
 		};
 		options.urlParams = {
 			'b': '1'
 		}
 	} else {
 		options.searchParams = {
-			'companyCode': '0',
-			type: 1
+			'companyCode': '0'
 		};
 	}
 	buildList(router, columns, options);
@@ -103,4 +106,3 @@ $(function(){
 		});
 	});
 })
-

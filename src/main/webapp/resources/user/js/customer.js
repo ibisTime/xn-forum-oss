@@ -1,10 +1,10 @@
 $(function(){
 	showPermissionControl();
-	
+
 	var router = '/customer';
-	
+
 	var isGlobal = !getQueryString('b');
-	
+
 	var columns = [{
 		field : '',
 		title : '',
@@ -51,22 +51,25 @@ $(function(){
 		field : 'remark',
 		title : '备注'
 	}];
-	
+
 	var options = {pageRouter: '/user/customer'};
 	if (!isGlobal) {
 		options.searchParams = {
 			'companyCode': getCityId(getUserId())
 		};
+		options.urlParams = {
+			b: 1
+		};
 	}
 	buildList(router, columns, options);
-	
+
 	$('#lockBtn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections')
 		if(selRecords.length <= 0){
 			alert("请选择记录");
 			return;
 		}
-		
+
 		var data = {"userId":selRecords[0].userId};
 		var url = $("#basePath").val()+"/user/" + (selRecords[0].status == 0 ? 'drop' : 'active');
 		doPostAjax(url, data, function(res) {
@@ -76,14 +79,31 @@ $(function(){
 			}
 		});
 	});
-	
+
+	$("#edit1Btn").click(function(){
+		var selRecords = $('#tableList').bootstrapTable('getSelections');
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		location.href = $("#basePath").val() + "/user/customer_addedit.htm?code=" + selRecords[0].userId + "&comCode=" + selRecords[0].companyCode + (isGlobal ? "" : "&b=1");
+	});
+
 	$('#detail1Btn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
 			return;
 		}
-		location.href = $("#basePath").val() + "/user/customer_detail.htm?code=" + selRecords[0].userId;
+		location.href = $("#basePath").val() + "/user/customer_detail.htm?code=" + selRecords[0].userId + (isGlobal ? "" : "&b=1");
+	});
+
+	$('#resetBtn').click(function() {
+		var selRecords = $('#tableList').bootstrapTable('getSelections')
+		if(selRecords.length <= 0){
+			alert("请选择记录");
+			return;
+		}
+		location.href = $("#basePath").val()+"/security/user_pwd_reset.htm?userId=" + selRecords[0].userId + '&loginName=' + selRecords[0].loginName;
 	});
 })
-

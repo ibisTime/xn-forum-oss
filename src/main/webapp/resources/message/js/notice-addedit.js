@@ -3,11 +3,12 @@ $(function() {
 	var code = getQueryString('code');
 	var isGlobal = !getQueryString('b');
 	var router = '/message';
+	var cityId = isGlobal ? '0' : getCityId(getUserId());
 	
 	var fields = [{
 		field: 'companyCode',
 		type: 'hidden',
-		value: isGlobal ? '0' : getCityId(getUserId())
+		value: cityId
 	},{
 		title: '标题',
 		field: 'title',
@@ -34,17 +35,22 @@ $(function() {
 		keyName: 'code',
 		valueName: 'name',
 		defaultOption: 'All',
-		defaultValue: isGlobal ? '0' : getCityId(getUserId()),
+		defaultValue: cityId,
 		hidden: !isGlobal,
 		required: true,
 		onChange: function(v, r) {
-			v = (v == '0' ? '' : v);
-			$('#toUser').renderDropdown({
-				url: $('#basePath').val() + '/customer/page?level='+(($('#toLevel').val() == '0') ? '' : $('#toLevel').val())+'&companyCode='+v+'&start=1&limit=100000',
-				keyName: 'userId',
-				valueName: 'loginName',
-				defaultOption: '<option value="0">All</option>'
-			});
+			var mobile = $("#mobile");
+			if(mobile.val() && mobile.valid()){
+				v = (v == '0' ? '' : v);
+				$('#toUser').renderDropdown({
+					url: $('#basePath').val() + '/customer/page?mobile='+mobile.val()+'&level='+(($('#toLevel').val() == '0') ? '' : $('#toLevel').val())+'&companyCode='+v+'&start=1&limit=100000',
+					keyName: 'userId',
+					valueName: 'loginName',
+					defaultOption: '<option value="0">All</option>'
+				});
+			}else{
+				$('#toUser').renderDropdown2({}, '<option value="0">All</option>');
+			}
 		}
 	}, {
 		field : 'toLevel',
@@ -56,13 +62,50 @@ $(function() {
 		defaultOption: 'All',
 		required: true,
 		onChange: function(v, r) {
-			v = (v == '0' ? '' : v);
-			$('#toUser').renderDropdown({
-				url: $('#basePath').val() + '/customer/page?level='+v+'&companyCode='+($('#toCompany').val() == 0 ? '' : $('#toCompany').val())+'&start=1&limit=100000',
-				keyName: 'userId',
-				valueName: 'loginName',
-				defaultOption: '<option value="0">All</option>'
-			});
+			var mobile = $("#mobile");
+			if(mobile.val() && mobile.valid()){
+				v = (v == '0' ? '' : v);
+				$('#toUser').renderDropdown({
+					url: $('#basePath').val() + '/customer/page?mobile='+mobile.val()+'&level='+v+'&companyCode='+($('#toCompany').val() == 0 ? '' : $('#toCompany').val())+'&start=1&limit=100000',
+					keyName: 'userId',
+					valueName: 'loginName',
+					defaultOption: '<option value="0">All</option>'
+				});
+			}else{
+				$('#toUser').renderDropdown2({}, '<option value="0">All</option>');
+			}
+		}
+	}, {
+		field: 'mobile',
+		title: '接受人手机号',
+		mobile: true,
+		required: false,
+		afterSet: function(v, data){
+			if(code && data.toUser != "0"){
+				var res = v;
+				if(!v){
+					$.ajax({
+				        type: 'get',
+				        async: false,
+				        url: $("#basePath").val() + '/customer/list?userId=' + data.toUser,
+				        dataType: 'json',
+				        success: function (d) {
+				            res = d.data[0].mobile;
+				        }
+				    });
+				}
+				$("#mobile").val(res); 
+				var val = $("#toLevel").val();
+				val = (val == '0' ? '' : val);
+				$('#toUser').renderDropdown({
+					url: $('#basePath').val() + '/customer/page?mobile='+res+'&level='+val+'&companyCode='+($('#toCompany').val() == 0 ? '' : $('#toCompany').val())+'&start=1&limit=100000',
+					keyName: 'userId',
+					valueName: 'loginName',
+					defaultOption: '<option value="0">All</option>'
+				});
+			}else{
+				$('#toUser').renderDropdown2({}, '<option value="0">All</option>');
+			}
 		}
 	}, {
 		field : 'toUser',
@@ -82,5 +125,19 @@ $(function() {
 	}
 	
 	buildDetail(router, fields, code);
-	
+	$("#mobile").on("keyup", function(){
+		var _self = $("#mobile");
+		if($("#toLevel").valid() && _self.val() && _self.valid()){
+			var v = $("#toLevel").val();
+			v = (v == '0' ? '' : v);
+			$('#toUser').renderDropdown({
+				url: $('#basePath').val() + '/customer/page?mobile='+_self.val()+'&level='+v+'&companyCode='+($('#toCompany').val() == 0 ? '' : $('#toCompany').val())+'&start=1&limit=100000',
+				keyName: 'userId',
+				valueName: 'loginName',
+				defaultOption: '<option value="0">All</option>'
+			});
+		}else{
+			$('#toUser').renderDropdown2({}, '<option value="0">All</option>');
+		}
+	});
 });

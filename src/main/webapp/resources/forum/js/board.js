@@ -1,6 +1,7 @@
 $(function(){
 	showPermissionControl();
-	
+	var branch = getQueryString('b') || "";
+	var cityId = branch ? 0 : getCityId(getUserId());
 	var router = '/forum/board';
 	var columns = [{
 		field : '',
@@ -13,9 +14,11 @@ $(function(){
 	},{
 		field : 'kind',
 		title : '大类',
-		formatter: Dict.getNameForList('plate_kind'),
+		url: $('#basePath').val() + '/forum/board/kind/list?companyCode=' + cityId,
 		search: true,
-		key: 'plate_kind'
+		type: 'select',
+		keyName: 'code',
+		valueName: 'name'
     },{
     	field : 'status',
 		title : '状态',
@@ -29,10 +32,13 @@ $(function(){
 		field: 'remark',
 		title: '备注'
 	}];
+	branch && columns.splice(4, 1);
 	buildList(router, columns, {
 		searchParams: {
-			'siteCode': getCityId(getUserId())
+			'siteCode': cityId
+		},
+		urlParams: {
+			b: branch
 		}
 	});
-})
-
+});
