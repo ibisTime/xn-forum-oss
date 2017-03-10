@@ -1,8 +1,8 @@
 $(function(){
 	showPermissionControl();
-	
+
 	var isGlobal = !getQueryString('b');
-	
+
 	var router = '/message';
 	var columns = [{
 		field : '',
@@ -36,13 +36,11 @@ $(function(){
 		valueName: 'name',
 		defaultOption: 'All'
     }, {
-    	field : 'toUser',
-		title : '作用人',
-		type: 'select',
-		url: $('#basePath').val() + '/customer/page?start=1&limit=100000',
-		keyName: 'userId',
-		valueName: 'loginName',
-		defaultOption: 'All'
+    	field : 'mobile',
+		title : '作用人手机',
+		formatter: function(v, data){
+			return data.toUser == "0" ? "All" : v;
+		}
     }, {
     	field : 'status',
 		title : '状态',
@@ -61,7 +59,7 @@ $(function(){
 		title : '备注'
 	}];
 	var options = {
-			pageRouter: '/message/notice', 
+			pageRouter: '/message/notice',
 			beforeEdit: function(r) {
 				if (r.status == 1) {
 					alert('该记录无法进行该操作');
@@ -83,14 +81,14 @@ $(function(){
 		};
 	}
 	buildList(router, columns, options);
-	
+
 	$('#publishBtn').click(function() {
 		var selRecords = $('#tableList').bootstrapTable('getSelections');
 		if(selRecords.length <= 0){
 			alert("请选择记录");
 			return;
 		}
-		
+
 		if(!confirm("确认发布该公告？")){
     		return false;
     	}
